@@ -15,11 +15,28 @@ func InitTally(tickets []Ticket) TicketTally {
 	i := 0
 	for i < len(tickets) {
 		multiples = append(multiples, 1)
+		i++
 	}
 	return TicketTally{multiples: multiples, tickets: tickets}
 }
 
-func (tally *TicketTally) multiply() {
+func (tally *TicketTally) Multiply() {
+	for ticketIndex := range tally.tickets {
+		ticket := tally.tickets[ticketIndex]
+		nrOfmatches := NrOfMatches(ticket.winning, ticket.holding)
+		nrTicket := tally.multiples[ticketIndex]
+		for index := ticketIndex + 1; index < min(ticketIndex+1+nrOfmatches, len(tally.multiples)); index++ {
+			tally.multiples[index] += nrTicket
+		}
+	}
+}
+
+func (tally TicketTally) SumOfTally() int {
+	sum := 0
+	for _, nr := range tally.multiples {
+		sum += nr
+	}
+	return sum
 }
 
 func (tally TicketTally) copyedIndexes(ticket Ticket) []int {

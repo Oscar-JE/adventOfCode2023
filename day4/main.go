@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(part1("input.txt"))
+	fmt.Println(part2("input.txt"))
 }
 
 func part1(path string) int {
@@ -25,6 +25,6 @@ func part1(path string) int {
 func part2(path string) int {
 	lines := parse.ReadInput(path)
 	tally := ticket.ParseTally(lines)
-	fmt.Println(tally)
-	return -1
+	tally.Multiply()
+	return tally.SumOfTally()
 }

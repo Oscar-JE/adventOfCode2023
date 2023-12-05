@@ -11,5 +11,8 @@ func TestPart1(t *testing.T) {
 }
 
 func TestPart2(t *testing.T) {
-	part2("input_short.txt")
+	res := part2("input_short.txt")
+	if res != 30 {
+		t.Errorf("pres f")
+	}
 }

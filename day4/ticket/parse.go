@@ -35,5 +35,5 @@ func ParseTally(lines []string) TicketTally {
 		winning, holding := Parse(line)
 		tickets = append(tickets, Ticket{winning: winning, holding: holding})
 	}
-	return TicketTally{tickets: tickets}
+	return InitTally(tickets)
 }
