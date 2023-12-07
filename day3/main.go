@@ -10,5 +10,5 @@ func main() {
 	lines := parse.ReadInput("input.txt")
 	schem := schematic.Init(lines)
 	fmt.Println(schem)
-	fmt.Println(schem.Score())
+	fmt.Println(schem.Score2())
 }

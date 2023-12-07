@@ -34,3 +34,7 @@ type Position struct {
 	row int
 	col int
 }
+
+func (p Position) Add(other Position) Position {
+	return Position{p.row + other.row, p.col + other.col}
+}
