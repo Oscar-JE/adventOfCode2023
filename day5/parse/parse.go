@@ -8,9 +8,9 @@ import (
 )
 
 type Triplet struct {
-	first  int
-	second int
-	last   int
+	First  int
+	Second int
+	Last   int
 }
 
 func Parse(path string) ([]int, []Triplet) {
@@ -55,5 +55,5 @@ func parseTriple(line string) Triplet {
 	if err1 != nil || err2 != nil || err3 != nil {
 		panic("failed to parse tripet")
 	}
-	return Triplet{first: first, second: second, last: third}
+	return Triplet{First: first, Second: second, Last: third}
 }
