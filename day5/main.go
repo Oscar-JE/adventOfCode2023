@@ -11,10 +11,15 @@ func main() {
 }
 
 func part1() {
-	seeds, triplets := parse.Parse("input_short.txt")
-	mappings := []maps.Mapping{}
-	for _, trip := range triplets {
-		mappings = append(mappings, maps.InitMapping(trip.Second, trip.First, trip.Last))
+	seeds, tripletsGs := parse.Parse("input_short.txt")
+	mappings := []maps.Transform{}
+	for _, tripG := range tripletsGs {
+		subTrans := []maps.SubTransform{}
+		for _, trip := range tripG.Group {
+			subTrans = append(subTrans, maps.InitSubTransform(trip.Second, trip.First, trip.Last))
+		}
+		mappings = append(mappings, maps.InitTransform(subTrans))
+
 	}
 	for _, seed := range seeds {
 		fmt.Println(seed)

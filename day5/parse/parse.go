@@ -13,7 +13,11 @@ type Triplet struct {
 	Last   int
 }
 
-func Parse(path string) ([]int, []Triplet) {
+type TripletGroup struct {
+	Group []Triplet
+}
+
+func Parse(path string) ([]int, []TripletGroup) {
 	file, err := os.Open(path)
 	if err != nil {
 		panic("cant find the supplied file")
@@ -22,6 +26,7 @@ func Parse(path string) ([]int, []Triplet) {
 	scanner.Scan()
 	seedLine := scanner.Text()
 	seeds := parseSeed(seedLine)
+	tripletGroup := []TripletGroup{}
 	triplets := []Triplet{}
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -29,8 +34,12 @@ func Parse(path string) ([]int, []Triplet) {
 			triple := parseTriple(line)
 			triplets = append(triplets, triple)
 		}
+		if strings.Contains(line, ":") {
+			tripletGroup = append(tripletGroup, TripletGroup{triplets})
+			triplets = []Triplet{}
+		}
 	}
-	return seeds, triplets
+	return seeds, tripletGroup[1:]
 }
 
 func parseSeed(line string) []int {

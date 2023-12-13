@@ -1,26 +1,49 @@
 package maps
 
-type Mapping struct {
+import "fmt"
+
+type Transform struct {
+	subTransforms []SubTransform
+}
+
+func InitTransform(subT []SubTransform) Transform {
+	return Transform{subT}
+}
+
+func (t Transform) Do(in int) int {
+	out := in
+	mapped := false
+	for _, subTrans := range t.subTransforms {
+		out, mapped = subTrans.Do(out)
+		if mapped {
+			break
+		}
+	}
+	return out
+}
+
+type SubTransform struct {
 	fromStart int
 	toStart   int
 	length    int
 }
 
-func InitMapping(fromStart int, toStart int, length int) Mapping {
-	return Mapping{fromStart: fromStart, toStart: toStart, length: length}
+func InitSubTransform(fromStart int, toStart int, length int) SubTransform {
+	return SubTransform{fromStart: fromStart, toStart: toStart, length: length}
 }
 
-func (m Mapping) Do(in int) int {
+func (m SubTransform) Do(in int) (int, bool) {
 	if m.fromStart <= in && in < (m.fromStart+m.length) {
-		return in + (m.toStart - m.fromStart)
+		return in + (m.toStart - m.fromStart), true
 	}
-	return in
+	return in, false
 }
 
-func Atlas(myMappings []Mapping, in int) int {
+func Atlas(myMappings []Transform, in int) int {
 	toMap := in
 	for _, myMap := range myMappings {
 		toMap = myMap.Do(toMap)
+		fmt.Printf("%d ", toMap)
 	}
 	return toMap
 }

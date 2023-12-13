@@ -19,7 +19,9 @@ func TestThripletParse(t *testing.T) {
 
 func TestParse(t *testing.T) {
 	path := "../input_short.txt"
-	seeds, triplets := Parse(path)
+	seeds, tripletsG := Parse(path)
 	fmt.Println(seeds)
-	fmt.Println(triplets)
+	for _, group := range tripletsG {
+		fmt.Println(group)
+	}
 }
