@@ -39,6 +39,7 @@ func Parse(path string) ([]int, []TripletGroup) {
 			triplets = []Triplet{}
 		}
 	}
+	tripletGroup = append(tripletGroup, TripletGroup{triplets})
 	return seeds, tripletGroup[1:]
 }
 

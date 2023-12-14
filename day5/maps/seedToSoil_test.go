@@ -1,6 +1,7 @@
 package maps
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -19,5 +20,15 @@ func TestDoMapping(t *testing.T) {
 }
 
 func TestTransform(t *testing.T) {
-	in := 78
+	first := SubTransform{fromStart: 56, toStart: 60, length: 37}
+	second := SubTransform{fromStart: 93, toStart: 56, length: 4}
+	trans := Transform{[]SubTransform{first, second}}
+	fmt.Println(trans)
+	in := []int{78, 43, 82, 35}
+	out := []int{82, 43, 86, 35}
+	for i := range in {
+		if trans.Do(in[i]) != out[i] {
+			t.Errorf("wrong in test humidity to location")
+		}
+	}
 }
