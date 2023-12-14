@@ -1,0 +1,5 @@
+lexical ordning
+
+cardGrouping representation
+
+typehandScore, cardsScore (bakifrån typ 13 talbas system)
