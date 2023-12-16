@@ -2,7 +2,7 @@ package card
 
 import "strings"
 
-const Ordering = "23456789TJQKA"
+const Ordering = "J23456789TQKA"
 
 type Card struct {
 	Rep string

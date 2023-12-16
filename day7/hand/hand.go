@@ -40,7 +40,45 @@ func (h Hand) CardGrouping() []CardGroup {
 			cardGroups = append(cardGroups, CardGroup{whatCard: cardCandidate, number: matches})
 		}
 	}
+	cardGroups = convertJokers(cardGroups)
 	return cardGroups
+}
+
+func convertJokers(cardGroups []CardGroup) []CardGroup {
+	if len(cardGroups) == 1 {
+		// no conversion possible
+		return cardGroups
+	}
+	indexOfJoker := -1
+	for i, group := range cardGroups { // find first not joker
+		if group.whatCard.Eq(card.Init("J")) {
+			indexOfJoker = i
+			break
+		}
+	}
+	if indexOfJoker == -1 { // there is no Jokers
+		return cardGroups
+	}
+	// find largest groupp nor joker
+	largestNotJoker := 0
+	if indexOfJoker == largestNotJoker {
+		largestNotJoker++
+	}
+	for i, group := range cardGroups {
+		if cardGroups[largestNotJoker].number < group.number && !group.whatCard.Eq(card.Init("J")) {
+			largestNotJoker = i
+		}
+	}
+	// add jokers to largestgroup
+	cardGroups[largestNotJoker].number += cardGroups[indexOfJoker].number
+
+	// remove Jokers
+	beforeJoker := cardGroups[0:indexOfJoker]
+	afterJoker := []CardGroup{}
+	if indexOfJoker != len(cardGroups)-1 {
+		afterJoker = append(afterJoker, cardGroups[indexOfJoker+1:]...)
+	}
+	return append(beforeJoker, afterJoker...)
 }
 
 func (h Hand) highCard() bool {

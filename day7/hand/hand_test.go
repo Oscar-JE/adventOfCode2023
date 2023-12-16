@@ -21,17 +21,27 @@ func TestCardGrouping(t *testing.T) {
 	}
 }
 
+func TestCardGroupingJokers(t *testing.T) {
+	hand := Init("JJ333")
+	groups := hand.CardGrouping()
+	thisCard := groups[0].whatCard
+	sameCardType := thisCard.Eq(card.Init("3"))
+	if (len(groups) != 1) || !sameCardType || (groups[0].number != 5) {
+		t.Errorf("wrong grouping")
+	}
+}
+
 func TestCatOrder1(t *testing.T) {
 	h1 := Init("KTJJT")
-	if h1.CategoryScore() != 2 {
-		t.Errorf("wrong category for T55J5")
+	if h1.CategoryScore() != 5 {
+		t.Errorf("wrong category for KTJJT")
 	}
 }
 
 func TestCatOrder2(t *testing.T) {
 	h1 := Init("KK677")
 	if h1.CategoryScore() != 2 {
-		t.Errorf("wrong category for T55J5")
+		t.Errorf("wrong category for KK677")
 	}
 }
 
@@ -49,9 +59,7 @@ func TestOrdering(t *testing.T) {
 	h1 := Init("KTJJT")
 	h2 := Init("KK677")
 	low := Lower(h1, h2)
-	if !low {
-		t.Errorf("faulse ordering")
+	if low {
+		t.Errorf("faulse ordering KTJJT should be bigger than KK677")
 	}
 }
-
-func TestHandCatogorising(t *testing.T)
