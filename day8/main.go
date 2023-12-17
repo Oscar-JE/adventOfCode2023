@@ -27,6 +27,5 @@ func main() {
 		leftAndRight := strings.Split(cleaned, ", ")
 		graphInfo = append(graphInfo, graph.NameLeftRight{Name: name, Left: leftAndRight[0], Right: leftAndRight[1]})
 	}
-	trav := traverser.Init(policyLine, graphInfo)
-	fmt.Println(trav.NrOfSteps())
+	fmt.Println(traverser.NrOfMutualSteps(policyLine, graphInfo))
 }

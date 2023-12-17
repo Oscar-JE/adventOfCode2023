@@ -37,7 +37,7 @@ func findNodeWithName(nodes []Node, name string) *Node {
 			return &nodes[i]
 		}
 	}
-	panic("no node with that name was found")
+	panic("no node with that name was found : " + name)
 }
 
 func (n Node) Go(dir direction.Direction) Node {
@@ -46,4 +46,27 @@ func (n Node) Go(dir direction.Direction) Node {
 	} else {
 		return *n.right
 	}
+}
+
+func InitFindStartingNodes(inputs []NameLeftRight) []Node {
+	nodes := []Node{}
+	for _, nameLR := range inputs {
+		nodes = append(nodes, Node{nameLR.Name, nil, nil})
+	}
+	for i, nameRL := range inputs {
+		nodes[i].left = findNodeWithName(nodes, nameRL.Left)
+		nodes[i].right = findNodeWithName(nodes, nameRL.Right)
+	}
+	startingNodes := findStartingNodes(nodes)
+	return startingNodes
+}
+
+func findStartingNodes(graph []Node) []Node {
+	startingNodes := []Node{}
+	for _, node := range graph {
+		if node.name[len(node.name)-1] == 'A' {
+			startingNodes = append(startingNodes, node)
+		}
+	}
+	return startingNodes
 }
