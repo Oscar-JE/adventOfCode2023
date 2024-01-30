@@ -26,3 +26,7 @@ func (p *Policy) GetNext() direction.Direction {
 	p.currentIndex = (p.currentIndex + 1) % len(p.sequence)
 	return dir
 }
+
+func (p *Policy) Recett() {
+	p.currentIndex = 0
+}
