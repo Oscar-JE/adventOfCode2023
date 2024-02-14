@@ -17,8 +17,26 @@ func FindLoops(pol string, graphInfo []graph.NameLeftRight) []congruence.TailedL
 	return lopes
 }
 
+type checkpoint struct {
+	decisionIndex int
+	nodeName      string
+}
+
 func findLoop(pol policy.Policy, node graph.Node) congruence.TailedLoopMultipleEndPoints {
+	history := []checkpoint{}
+	foundInHistory := false
+	for !foundInHistory {
+		decision, index := pol.GetNextAndindex()
+		c := checkpoint{index, decision.GetName()}
+		foundInHistory = search(history, c)
+		history = append(history, c)
+	}
 	return congruence.InitTailedLoop(0, 0, []int{0})
+}
+
+func search(history []checkpoint, c checkpoint) bool {
+	in := false
+	return in
 }
 
 func NrOfSteps(pol string, graphInfo []graph.NameLeftRight) int {
