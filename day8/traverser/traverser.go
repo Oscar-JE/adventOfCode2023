@@ -25,9 +25,11 @@ type checkpoint struct {
 func findLoop(pol policy.Policy, node graph.Node) congruence.TailedLoopMultipleEndPoints {
 	history := []checkpoint{}
 	foundInHistory := false
+	currentNode := node
 	for !foundInHistory {
 		decision, index := pol.GetNextAndindex()
-		c := checkpoint{index, decision.GetName()}
+		c := checkpoint{index, currentNode.GetName()}
+		currentNode = currentNode.Go(decision)
 		foundInHistory = search(history, c)
 		history = append(history, c)
 	}

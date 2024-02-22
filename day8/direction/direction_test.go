@@ -5,9 +5,9 @@ import (
 )
 
 func TestDirectionName(t *testing.T) {
-	dir := direction.Left
-	res := dit.GetName()
-	if res != "L"{
+	dir := LEFT
+	res := dir.String()
+	if res != "L" {
 		t.Errorf("res was ")
 	}
 }

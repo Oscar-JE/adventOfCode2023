@@ -7,7 +7,7 @@ const (
 	RIGHT Direction = 1
 )
 
-func (d Direction) GetName() string {
+func (d Direction) String() string {
 	if d == 0 {
 		return "L"
 	} else {
