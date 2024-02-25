@@ -14,6 +14,11 @@ func (loop TailedLoopMultipleEndPoints) Eq(other TailedLoopMultipleEndPoints) bo
 	taledEq := loop.tail == other.tail
 	loopLenEq := loop.loopLength == other.loopLength
 	if !taledEq || !loopLenEq {
-		return false;
+		return false
 	}
+	winingPointsEq := true
+	for i := range loop.winingPoints {
+		winingPointsEq = winingPointsEq && loop.winingPoints[i] == other.winingPoints[i]
+	}
+	return winingPointsEq
 }

@@ -1,9 +1,9 @@
 package traverser
 
 import (
+	"day8/congruence"
 	"day8/graph"
 	"day8/policy"
-	"day8/congruence"
 	"testing"
 )
 
@@ -19,11 +19,11 @@ func TestFinndLoop(t *testing.T) {
 	pol := policy.Init("LLR")
 	loop := findLoop(pol, example)
 	// AAA 0 , BBB 1, AAA 2 , BBB 0, AAA 1, BBB 2, ZZZ 0, ZZZ 1 , ZZZ 2  , ZZZ 0 hittatloop
-	winingPoints := []int{6,7,8}
+	winingPoints := []int{6, 7, 8}
 	tailLength := 6
 	loopLength := 3
-	expectedLoop := congruence.InitTailedLoop(tailLength,loopLength, winingPoints)
-	if (expectedLoop!= loop){
+	expectedLoop := congruence.InitTailedLoop(tailLength, loopLength, winingPoints)
+	if !expectedLoop.Eq(loop) {
 		t.Errorf("unexpected loop")
 	}
 }

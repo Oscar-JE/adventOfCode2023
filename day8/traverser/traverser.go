@@ -23,6 +23,11 @@ type checkpoint struct {
 }
 
 func findLoop(pol policy.Policy, node graph.Node) congruence.TailedLoopMultipleEndPoints {
+	findHistory(node, pol)
+	return congruence.InitTailedLoop(0, 0, []int{0})
+}
+
+func findHistory(node graph.Node, pol policy.Policy) []checkpoint {
 	history := []checkpoint{}
 	foundInHistory := false
 	currentNode := node
@@ -33,12 +38,16 @@ func findLoop(pol policy.Policy, node graph.Node) congruence.TailedLoopMultipleE
 		foundInHistory = search(history, c)
 		history = append(history, c)
 	}
-	return congruence.InitTailedLoop(0, 0, []int{0})
+	return history
 }
 
 func search(history []checkpoint, c checkpoint) bool {
-	in := false
-	return in
+	for _, el := range history {
+		if el == c {
+			return true
+		}
+	}
+	return false
 }
 
 func NrOfSteps(pol string, graphInfo []graph.NameLeftRight) int {
