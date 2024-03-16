@@ -22,12 +22,27 @@ type checkpoint struct {
 	nodeName      string
 }
 
+func eq(h1 []checkpoint, h2 []checkpoint) bool {
+	if len(h1) != len(h2) {
+		return false
+	}
+	equal := true
+	for i := range h1 {
+		equal = equal && h1[i] == h2[i]
+	}
+	return equal
+}
+
+func createLoopFromHistory(history []checkpoint) congruence.TailedLoopMultipleEndPoints {
+	return congruence.InitTailedLoop(0, 0, []int{})
+}
+
 func findLoop(pol policy.Policy, node graph.Node) congruence.TailedLoopMultipleEndPoints {
-	findHistory(node, pol)
+	findHistory(pol, node)
 	return congruence.InitTailedLoop(0, 0, []int{0})
 }
 
-func findHistory(node graph.Node, pol policy.Policy) []checkpoint {
+func findHistory(pol policy.Policy, node graph.Node) []checkpoint {
 	history := []checkpoint{}
 	foundInHistory := false
 	currentNode := node

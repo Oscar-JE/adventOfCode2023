@@ -1,5 +1,7 @@
 package congruence
 
+import "fmt"
+
 type TailedLoopMultipleEndPoints struct {
 	tail         int
 	loopLength   int
@@ -21,4 +23,23 @@ func (loop TailedLoopMultipleEndPoints) Eq(other TailedLoopMultipleEndPoints) bo
 		winingPointsEq = winingPointsEq && loop.winingPoints[i] == other.winingPoints[i]
 	}
 	return winingPointsEq
+}
+
+func (t TailedLoopMultipleEndPoints) String() string {
+	return fmt.Sprintf("tail : %d , loopLength: %d , winingPoints %v ", t.tail, t.loopLength, t.winingPoints)
+}
+
+func (t TailedLoopMultipleEndPoints) Eq(other TailedLoopMultipleEndPoints) bool {
+	return t.tail == other.tail && t.loopLength == other.loopLength && sliceEq(t.winingPoints, other.winingPoints)
+}
+
+func sliceEq(v1 []int, v2 []int) bool {
+	if len(v1) != len(v2) {
+		return false
+	}
+	equal := true
+	for i := range v1 {
+		equal = equal && v1[i] == v2[i]
+	}
+	return equal
 }

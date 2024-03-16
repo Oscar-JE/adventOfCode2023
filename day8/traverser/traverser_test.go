@@ -24,7 +24,17 @@ func TestFinndLoop(t *testing.T) {
 	loopLength := 3
 	expectedLoop := congruence.InitTailedLoop(tailLength, loopLength, winingPoints)
 	if !expectedLoop.Eq(loop) {
-		t.Errorf("unexpected loop")
+		t.Errorf("unexpected loop" + loop.String() + "\n expectedloop: " + expectedLoop.String())
+	}
+}
+
+func TestFindHistory(t *testing.T) {
+	example := graph.Init(simple1())
+	pol := policy.Init("LLR")
+	history := findHistory(pol, example)
+	expectedHistory := []checkpoint{{0, "AAA"}, {1, "BBB"}, {2, "AAA"}, {0, "BBB"}, {1, "AAA"}, {2, "BBB"}, {0, "ZZZ"}, {1, "ZZZ"}, {2, "ZZZ"}, {0, "ZZZ"}}
+	if !eq(history, expectedHistory) {
+		t.Errorf("\nExpected history : %v , \n Actuall history : %v", expectedHistory, history)
 	}
 }
 
