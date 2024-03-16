@@ -38,6 +38,18 @@ func TestFindHistory(t *testing.T) {
 	}
 }
 
+func TestConvertHistoryToLoop(t *testing.T) {
+	history := []checkpoint{{0, "AAA"}, {1, "BBB"}, {2, "AAA"}, {0, "BBB"}, {1, "AAA"}, {2, "BBB"}, {0, "ZZZ"}, {1, "ZZZ"}, {2, "ZZZ"}, {0, "ZZZ"}}
+	winingPoints := []int{6, 7, 8}
+	tailLength := 6
+	loopLength := 3
+	expectedLoop := congruence.InitTailedLoop(tailLength, loopLength, winingPoints)
+	actuallLoop := createLoopFromHistory(history)
+	if expectedLoop.Eq(actuallLoop) {
+		t.Errorf("Expected")
+	}
+}
+
 func simple2() []graph.NameLeftRight {
 	return []graph.NameLeftRight{
 		{Name: "11A", Left: "11B", Right: "XXX"},
