@@ -45,8 +45,8 @@ func TestConvertHistoryToLoop(t *testing.T) {
 	loopLength := 3
 	expectedLoop := congruence.InitTailedLoop(tailLength, loopLength, winingPoints)
 	actuallLoop := createLoopFromHistory(history)
-	if expectedLoop.Eq(actuallLoop) {
-		t.Errorf("Expected")
+	if !expectedLoop.Eq(actuallLoop) {
+		t.Errorf("\nExpected :" + expectedLoop.String() + "\n" + "Actuall  :" + actuallLoop.String())
 	}
 }
 
