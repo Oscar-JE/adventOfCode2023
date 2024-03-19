@@ -4,6 +4,7 @@ import (
 	"day8/congruence"
 	"day8/graph"
 	"day8/policy"
+	"strings"
 )
 
 func FindLoops(pol string, graphInfo []graph.NameLeftRight) []congruence.TailedLoopMultipleEndPoints {
@@ -34,12 +35,27 @@ func eq(h1 []checkpoint, h2 []checkpoint) bool {
 }
 
 func createLoopFromHistory(history []checkpoint) congruence.TailedLoopMultipleEndPoints {
-	return congruence.InitTailedLoop(0, 0, []int{})
+	reentry_index := 0 // failar om loopens längd är under 3
+	last_element := history[len(history)-1]
+	for i := len(history) - 2; i >= 0; i-- {
+		if history[i] == last_element {
+			reentry_index = i
+			break
+		}
+	}
+	loopLen := (len(history) - 1) - reentry_index // längd utan upprepningspunkten minus där vi hoppade in
+	indixies_of_winingpoints := []int{}
+	for i := 0; i < len(history)-1; i++ {
+		if strings.Contains(history[i].nodeName, "Z") {
+			indixies_of_winingpoints = append(indixies_of_winingpoints, i)
+		}
+	}
+	return congruence.InitTailedLoop(reentry_index, loopLen, indixies_of_winingpoints)
 }
 
 func findLoop(pol policy.Policy, node graph.Node) congruence.TailedLoopMultipleEndPoints {
-	findHistory(pol, node)
-	return congruence.InitTailedLoop(0, 0, []int{0})
+	history := findHistory(pol, node)
+	return createLoopFromHistory(history)
 }
 
 func findHistory(pol policy.Policy, node graph.Node) []checkpoint {
