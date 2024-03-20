@@ -7,6 +7,8 @@ import (
 	"testing"
 )
 
+// bör kunna krama in båda i samma tänk med loopar
+
 func simple1() []graph.NameLeftRight {
 	return []graph.NameLeftRight{
 		{Name: "AAA", Left: "BBB", Right: "BBB"},

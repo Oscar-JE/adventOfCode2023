@@ -19,6 +19,9 @@ func (loop TailedLoopMultipleEndPoints) Eq(other TailedLoopMultipleEndPoints) bo
 		return false
 	}
 	winingPointsEq := true
+	if len(loop.winingPoints) != len(other.winingPoints) {
+		return false
+	}
 	for i := range loop.winingPoints {
 		winingPointsEq = winingPointsEq && loop.winingPoints[i] == other.winingPoints[i]
 	}
@@ -27,4 +30,8 @@ func (loop TailedLoopMultipleEndPoints) Eq(other TailedLoopMultipleEndPoints) bo
 
 func (t TailedLoopMultipleEndPoints) String() string {
 	return fmt.Sprintf("tail : %d , loopLength: %d , winingPoints %v ", t.tail, t.loopLength, t.winingPoints)
+}
+
+func (t TailedLoopMultipleEndPoints) Synk(other TailedLoopMultipleEndPoints) TailedLoopMultipleEndPoints {
+	return InitTailedLoop(0, 0, []int{})
 }
