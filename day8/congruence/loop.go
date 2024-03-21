@@ -1,6 +1,9 @@
 package congruence
 
-import "fmt"
+import (
+	"day8/congruence/math"
+	"fmt"
+)
 
 type TailedLoopMultipleEndPoints struct {
 	tail         int
@@ -36,39 +39,8 @@ func (t TailedLoopMultipleEndPoints) Synk(other TailedLoopMultipleEndPoints) Tai
 	if t.Eq(other) {
 		return other
 	}
-	winningIndexes := setIntersect(t.winingPoints, other.winingPoints)
-	tail := max(t.tail, other.tail)
-	return InitTailedLoop(tail, t.loopLength, winningIndexes)
-}
-
-func setIntersect(numbers1 []int, numbers2 []int) []int {
-	shortest := numbers1
-	longest := numbers2
-	result := []int{}
-	if len(numbers2) < len(numbers1) {
-		shortest = numbers2
-		longest = numbers1
-	}
-	for i := range shortest {
-		if contains(shortest[i], longest) {
-			result = append(result, shortest[i])
-		}
-	}
-	return result
-}
-
-func contains(element int, numbers []int) bool {
-	for i := range numbers {
-		if numbers[i] == element {
-			return true
-		}
-	}
-	return false
-}
-
-func max(a int, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+	winningIndexes := math.SetIntersect(t.winingPoints, other.winingPoints)
+	tail := math.Max(t.tail, other.tail)
+	loopLength := t.loopLength * other.loopLength // antagligen något annat vid inte primtal
+	return InitTailedLoop(tail, loopLength, winningIndexes)
 }
