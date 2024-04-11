@@ -17,3 +17,11 @@ func isAllZeros(series []int) bool {
 	}
 	return res
 }
+
+func Backwards(series []int) int {
+	if isAllZeros(series) {
+		return 0
+	}
+	dif := differentiate.Diff(series)
+	return series[0] - Backwards(dif)
+}

@@ -10,11 +10,11 @@ import (
 )
 
 func main() {
-	part1()
+	part2()
 }
 
 func part1() {
-	fReader, err := os.Open("input_short.txt")
+	fReader, err := os.Open("input.txt")
 	if err != nil {
 		panic(err)
 	}
@@ -24,7 +24,21 @@ func part1() {
 		series := parse(scanner.Text())
 		sum += extrapolation.Extrapolate(series)
 	}
-	fmt.Println("Sum of all extrapolations is %d", sum)
+	fmt.Printf("Sum of all extrapolations is %d", sum)
+}
+
+func part2() {
+	fReader, err := os.Open("input.txt")
+	if err != nil {
+		panic(err)
+	}
+	scanner := bufio.NewScanner(fReader)
+	sum := 0
+	for scanner.Scan() {
+		series := parse(scanner.Text())
+		sum += extrapolation.Backwards(series)
+	}
+	fmt.Printf("Sum of all extrapolations is %d", sum)
 }
 
 func parse(inputString string) []int {

@@ -39,3 +39,11 @@ func TestDepthTwo(t *testing.T) { // måste kolla med instructionerna
 		t.Errorf("See the comment in test depth two, answer should be 6")
 	}
 }
+
+func TestBackwardsExample(t *testing.T) {
+	input := []int{10, 13, 16, 21, 30, 45}
+	res := Backwards(input)
+	if res != 5 {
+		t.Errorf("Examine backwards extrapolation more carefully")
+	}
+}
