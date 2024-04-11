@@ -15,8 +15,8 @@ func Min(a int, b int) int {
 }
 
 func GCD(a int, b int) int {
-	if a <= 0 || b <= 0 {
-		return 0
+	if a <= 1 || b <= 1 {
+		return 1
 	}
 	lesser := Min(a, b)
 	greater := Max(a, b)

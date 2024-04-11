@@ -41,6 +41,13 @@ func (t TailedLoopMultipleEndPoints) Synk(other TailedLoopMultipleEndPoints) Tai
 	}
 	winningIndexes := math.SetIntersect(t.winingPoints, other.winingPoints)
 	tail := math.Max(t.tail, other.tail)
-	loopLength := t.loopLength * other.loopLength // antagligen något annat vid inte primtal
+	loopLength := t.loopLength * other.loopLength / math.GCD(t.loopLength, other.loopLength) // antagligen något annat vid inte primtal
 	return InitTailedLoop(tail, loopLength, winningIndexes)
+}
+
+func (l TailedLoopMultipleEndPoints) GetFirstWiningIndex() int { // bättre att skriva med error men lämnar såhär när vi testar
+	if len(l.winingPoints) != 0 {
+		return l.winingPoints[0]
+	}
+	return -1
 }
