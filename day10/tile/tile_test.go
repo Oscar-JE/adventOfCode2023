@@ -27,7 +27,7 @@ func TestInitStraigthLaying(t *testing.T) {
 	res := straigth.Ways()
 	expected := point.InitVecSet([]point.Vec{point.Init(0, 0), point.Init(0, 2)})
 	if !expected.Eq(res) {
-		t.Errorf("kolla närmare på ways av stående streck")
+		t.Errorf("kolla närmare på ways av liggande streck")
 	}
 }
 

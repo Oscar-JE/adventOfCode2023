@@ -2,9 +2,26 @@ package tile
 
 import "day10/point"
 
-type Tile interface {
-	Ways() point.VecSet
-	GetPos() point.Vec
+type Tile struct {
+	movements MovementsGen
+	position  point.Vec
+}
+
+func InitTile(position point.Vec, movements MovementsGen) Tile {
+	return Tile{position: position, movements: movements}
+}
+
+func (t Tile) Ways() point.VecSet {
+	moves := t.movements.moves()
+	return moves.Translate(t.position)
+}
+
+func (t Tile) GetPos() point.Vec {
+	return t.position
+}
+
+type MovementsGen interface {
+	moves() point.VecSet
 }
 
 func Connected(t1 Tile, t2 Tile) bool {
@@ -13,26 +30,26 @@ func Connected(t1 Tile, t2 Tile) bool {
 
 func Init(r rune, p point.Vec) Tile {
 	if r == '.' {
-		return empty{}
+		return InitTile(p, empty{})
 	}
 	if r == '|' {
-		return straigth{position: p, standing: true}
+		return InitTile(p, straigth{standing: true})
 	}
 	if r == '-' {
-		return straigth{position: p, standing: false}
+		return InitTile(p, straigth{standing: false})
 	}
 	if r == 'L' {
-		return NortEastBend(p)
+		return InitTile(p, NortEastBend())
 	}
 	if r == 'J' {
-		return NortWestBend(p)
+		return InitTile(p, NortWestBend())
 	}
 	if r == '7' {
-		return SoutWestBend(p)
+		return InitTile(p, SoutWestBend())
 	}
 	if r == 'F' {
-		return EastSouthBend(p)
+		return InitTile(p, EastSouthBend())
 	}
 
-	return empty{}
+	return InitTile(p, empty{})
 }

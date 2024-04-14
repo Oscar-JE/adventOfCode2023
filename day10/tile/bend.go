@@ -4,36 +4,26 @@ import "day10/point"
 
 type Bend struct {
 	orientation BendOrientation
-	position    point.Vec
 }
 
-func NortEastBend(p point.Vec) Bend {
-	return Bend{NortEast(), p}
+func NortEastBend() Bend {
+	return Bend{NortEast()}
 }
 
-func NortWestBend(p point.Vec) Bend {
-	return Bend{NortWest(), p}
+func NortWestBend() Bend {
+	return Bend{NortWest()}
 }
 
-func SoutWestBend(p point.Vec) Bend {
-	return Bend{SoutWest(), p}
+func SoutWestBend() Bend {
+	return Bend{SoutWest()}
 }
 
-func EastSouthBend(p point.Vec) Bend {
-	return Bend{EastSouth(), p}
+func EastSouthBend() Bend {
+	return Bend{EastSouth()}
 }
 
-func (b Bend) Ways() point.VecSet {
-	m := b.movement()
-	return m.Translate(b.position)
-}
-
-func (b Bend) GetPos() point.Vec {
-	return b.position
-}
-
-func (b Bend) movement() point.VecSet {
-	set := point.EmptySet() // default till NortEast
+func (b Bend) moves() point.VecSet {
+	set := point.EmptySet()
 	set.Add(point.Init(-1, 0))
 	set.Add(point.Init(0, 1))
 	for i := 0; i < b.orientation.Key; i++ {
