@@ -37,3 +37,14 @@ func (f Field) GetByInt(x int, y int) tile.Tile {
 func runeAt(s string, index int) rune {
 	return ([]rune(s))[index]
 }
+
+func (f Field) FindStartingPosition() point.Vec {
+	for i := range len(f.rows) {
+		for j := range f.columns {
+			if runeAt(f.rows[i], j) == 'S' {
+				return point.Init(i, j)
+			}
+		}
+	}
+	return point.Init(0, 0)
+}

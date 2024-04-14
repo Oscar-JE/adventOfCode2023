@@ -6,19 +6,19 @@ type Bend struct {
 	orientation BendOrientation
 }
 
-func NortEastBend() Bend {
+func nortEastBend() Bend {
 	return Bend{NortEast()}
 }
 
-func NortWestBend() Bend {
+func nortWestBend() Bend {
 	return Bend{NortWest()}
 }
 
-func SoutWestBend() Bend {
+func soutWestBend() Bend {
 	return Bend{SoutWest()}
 }
 
-func EastSouthBend() Bend {
+func eastSouthBend() Bend {
 	return Bend{EastSouth()}
 }
 

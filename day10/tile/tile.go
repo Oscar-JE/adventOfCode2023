@@ -39,16 +39,20 @@ func Init(r rune, p point.Vec) Tile {
 		return InitTile(p, straigth{standing: false})
 	}
 	if r == 'L' {
-		return InitTile(p, NortEastBend())
+		return InitTile(p, nortEastBend())
 	}
 	if r == 'J' {
-		return InitTile(p, NortWestBend())
+		return InitTile(p, nortWestBend())
 	}
 	if r == '7' {
-		return InitTile(p, SoutWestBend())
+		return InitTile(p, soutWestBend())
 	}
 	if r == 'F' {
-		return InitTile(p, EastSouthBend())
+		return InitTile(p, eastSouthBend())
+	}
+
+	if r == 'S' {
+		return InitTile(p, start{})
 	}
 
 	return InitTile(p, empty{})

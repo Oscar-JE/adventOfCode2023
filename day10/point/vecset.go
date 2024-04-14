@@ -6,6 +6,10 @@ type VecSet struct {
 	vectors []Vec
 }
 
+func (v VecSet) GetVectors() []Vec {
+	return v.vectors
+}
+
 func (set VecSet) In(v Vec) bool {
 	for _, el := range set.vectors {
 		if el == v {
