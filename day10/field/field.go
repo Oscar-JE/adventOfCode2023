@@ -48,3 +48,7 @@ func (f Field) FindStartingPosition() point.Vec {
 	}
 	return point.Init(0, 0)
 }
+
+func (f Field) Outside(vec point.Vec) bool {
+	return vec.GetX() < 0 || vec.GetX() >= len(f.rows) || vec.GetY() < 0 || vec.GetY() >= f.columns
+}
