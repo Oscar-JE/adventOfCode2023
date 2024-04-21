@@ -7,12 +7,13 @@ import (
 )
 
 type Field struct {
-	rows    []string
+	runes   [][]rune
+	rows    int
 	columns int
 }
 
 func (f Field) GetRows() int {
-	return len(f.rows)
+	return f.rows
 }
 
 func (f Field) GetCols() int {
@@ -20,16 +21,18 @@ func (f Field) GetCols() int {
 }
 
 func Init(rows []string) (Field, error) {
-	if len(rows) == 0 {
+	runes := [][]rune{}
+	nrRows := len(rows)
+	if nrRows == 0 {
 		return Field{}, errors.New("empty field")
 	}
-	length := len(rows[0])
-	for i := 1; i < len(rows); i++ {
-		if len(rows[i]) != length {
-			return Field{}, errors.New("inconsisten row length in Init input")
-		}
+	nrCols := len([]rune(rows[0]))
+	for i := range rows {
+		runesInrow := []rune(rows[i])
+		runes = append(runes, runesInrow)
 	}
-	return Field{rows: rows, columns: length}, nil
+
+	return Field{runes: runes, rows: nrRows, columns: nrCols}, nil
 }
 
 func (f Field) GetByVec(v point.Vec) tile.Tile {
@@ -38,18 +41,13 @@ func (f Field) GetByVec(v point.Vec) tile.Tile {
 
 func (f Field) GetByInt(x int, y int) tile.Tile {
 	p := point.Init(x, y)
-	s := f.rows[x]
-	return tile.Init(runeAt(s, y), p)
-}
-
-func runeAt(s string, index int) rune {
-	return ([]rune(s))[index]
+	return tile.Init(f.runes[x][y], p)
 }
 
 func (f Field) FindStartingPosition() point.Vec {
-	for i := range len(f.rows) {
+	for i := range f.runes {
 		for j := range f.columns {
-			if runeAt(f.rows[i], j) == 'S' {
+			if f.runes[i][j] == 'S' {
 				return point.Init(i, j)
 			}
 		}
@@ -58,5 +56,36 @@ func (f Field) FindStartingPosition() point.Vec {
 }
 
 func (f Field) Outside(vec point.Vec) bool {
-	return vec.GetX() < 0 || vec.GetX() >= len(f.rows) || vec.GetY() < 0 || vec.GetY() >= f.columns
+	return vec.GetX() < 0 || vec.GetX() >= f.rows || vec.GetY() < 0 || vec.GetY() >= f.columns
+}
+
+func (f Field) String() string {
+	retString := ""
+	for i := range f.rows {
+		for j := range f.columns {
+			retString += string(f.runes[i][j])
+		}
+		retString += "\n"
+	}
+	return retString
+}
+
+func (f *Field) RemoveEverythingExcept(vecs point.VecList) {
+	for i := range f.rows {
+		for j := range f.columns {
+			if !vecs.Has(point.Init(i, j)) {
+				f.Set(i, j, '.')
+			}
+		}
+	}
+}
+
+func (f *Field) Set(row int, col int, r rune) {
+	f.runes[row][col] = r
+}
+
+func (f *Field) FillTheseWith(vecs point.VecList, r rune) {
+	for _, vec := range vecs.GetList() {
+		f.Set(vec.GetX(), vec.GetY(), r)
+	}
 }

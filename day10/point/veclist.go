@@ -17,6 +17,10 @@ func (vs VecList) Len() int {
 	return len(vs.vecs)
 }
 
+func (vs VecList) GetList() []Vec {
+	return vs.vecs
+}
+
 func (vs VecList) Eq(other VecList) bool {
 	if vs.Len() != other.Len() {
 		return false

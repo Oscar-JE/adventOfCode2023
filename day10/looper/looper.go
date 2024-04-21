@@ -4,6 +4,7 @@ import (
 	"day10/field"
 	"day10/middle"
 	"day10/point"
+	"fmt"
 )
 
 func NrOfSrepsToFurthestPoint(f field.Field) int {
@@ -41,7 +42,11 @@ func findBoundaryOfLoop(f field.Field) point.VecList {
 func NrOfInteriorPoints(f field.Field) int {
 	boundary := findBoundaryOfLoop(f)
 	startingPoints := findStartingPoints(boundary)
-	return flodFill(f, startingPoints)
+	filled := flodFillDetailjerad(f, startingPoints)
+	f.RemoveEverythingExcept(boundary)
+	f.FillTheseWith(point.InitVecList(filled.GetVectors()), 'I')
+	fmt.Println(f)
+	return filled.Len()
 }
 
 func findConnected(f field.Field, p point.Vec) point.VecSet {
@@ -61,6 +66,10 @@ func findConnected(f field.Field, p point.Vec) point.VecSet {
 }
 
 func flodFill(f field.Field, startingPoints point.VecList) int {
+	return flodFillDetailjerad(f, startingPoints).Len()
+}
+
+func flodFillDetailjerad(f field.Field, startingPoints point.VecList) point.VecSet {
 	boundary := findBoundaryOfLoop(f)
 	visitied := point.InitVecSet([]point.Vec{})
 	evaluationOrder := startingPoints
@@ -75,7 +84,7 @@ func flodFill(f field.Field, startingPoints point.VecList) int {
 			evaluationOrder.Append(el)
 		}
 	}
-	return visitied.Len()
+	return visitied
 }
 
 func cross(v point.Vec) []point.Vec {
@@ -105,7 +114,11 @@ func findStartingPoints(bondary point.VecList) point.VecList {
 		nextVector = bondary.Get(i + 1)
 		loopDirection = nextVector.Subtract(currentVec)
 		insideCandidate = nextVector.Add(point.Rotate90counterclockwiseMultipleTimes(loopDirection, nrOfRotations))
+		insideCandidate2 := currentVec.Add(point.Rotate90counterclockwiseMultipleTimes(loopDirection, nrOfRotations))
 		if !bondary.Has(insideCandidate) && !startingPoints.Has(insideCandidate) {
+			startingPoints.Append(insideCandidate)
+		}
+		if !bondary.Has(insideCandidate2) && !startingPoints.Has(insideCandidate2) {
 			startingPoints.Append(insideCandidate)
 		}
 
