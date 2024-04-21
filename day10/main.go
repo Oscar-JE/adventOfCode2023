@@ -15,6 +15,7 @@ func main() {
 		panic("error creating field")
 	}
 	fmt.Println(looper.NrOfSrepsToFurthestPoint(f))
+	fmt.Println(looper.NrOfInteriorPoints(f))
 }
 
 func readInput() []string {

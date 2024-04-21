@@ -32,6 +32,18 @@ func (v *Vec) Rotate90counterclockwise() {
 	v.y = newY
 }
 
+func Rotate90counterclockwise(v Vec) Vec {
+	v.Rotate90counterclockwise()
+	return v
+}
+
+func Rotate90counterclockwiseMultipleTimes(v Vec, nr int) Vec {
+	for i := 0; i < nr; i++ {
+		v.Rotate90counterclockwise()
+	}
+	return v
+}
+
 func (v Vec) Less(other Vec) bool {
 	if v.x < other.x {
 		return true
@@ -39,4 +51,16 @@ func (v Vec) Less(other Vec) bool {
 		return true
 	}
 	return false
+}
+
+func L2DistanceSquared(v1 Vec, v2 Vec) int {
+	return (v1.x-v2.x)*(v1.x-v2.x) + (v1.y-v2.y)*(v1.y-v2.y)
+}
+
+func (v Vec) Subtract(other Vec) Vec {
+	return Init(v.x-other.x, v.y-other.y)
+}
+
+func InnerProduct(v1 Vec, v2 Vec) int {
+	return v1.x*v2.x + v1.y*v2.y
 }

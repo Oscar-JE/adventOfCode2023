@@ -11,6 +11,14 @@ type Field struct {
 	columns int
 }
 
+func (f Field) GetRows() int {
+	return len(f.rows)
+}
+
+func (f Field) GetCols() int {
+	return f.columns
+}
+
 func Init(rows []string) (Field, error) {
 	if len(rows) == 0 {
 		return Field{}, errors.New("empty field")
