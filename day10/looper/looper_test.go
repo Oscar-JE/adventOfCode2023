@@ -127,6 +127,26 @@ func TestNrOfEnclosedPointsNoCorridor(t *testing.T) {
 	}
 }
 
+func TestNrOfInternalOneTrappedOutsider(t *testing.T) {
+	field, err := field.Init([]string{
+		"........",
+		".S----7.",
+		".|F-7.|.",
+		".||.L7|.",
+		".|L7FJ|.",
+		".|.||.|.",
+		".L-JL-J.",
+		"........"})
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	l := NrOfInteriorPoints(field)
+	if l != 3 {
+		t.Errorf("Interior points counting failed")
+	}
+}
+
 func TestFindConnectedSimpleLoopAtStart(t *testing.T) {
 	field, err := field.Init([]string{
 		".....",
@@ -211,5 +231,45 @@ func TestFindStartingPointsSimple(t *testing.T) {
 	expected := 16
 	if expected != res {
 		t.Errorf("Undersök FlodFill i det enklaste caset utanför")
+	}
+}
+
+func TestNrOfEnclosedPointsNoCorrid4or(t *testing.T) {
+	field, err := field.Init([]string{
+		"..........",
+		".S------7.",
+		".|......|.",
+		".|......|.",
+		".|......|.",
+		".|......|.",
+		".|......|.",
+		".L------J.",
+		".........."})
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	l := NrOfInteriorPoints(field)
+	if l != 4 {
+		t.Errorf("Interior points counting failed")
+	}
+}
+
+func TestNrOfEnclosedPointsTurning(t *testing.T) {
+	field, err := field.Init([]string{
+		"........",
+		"..S7F-7.",
+		"..|LJFJ.",
+		"..L7.L7.",
+		"..FJF7|.",
+		"..L-JLJ.",
+		"........"})
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	l := NrOfInteriorPoints(field)
+	if l != 1 {
+		t.Errorf("Interior points counting failed")
 	}
 }
