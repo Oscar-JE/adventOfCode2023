@@ -98,28 +98,31 @@ func cross(v point.Vec) []point.Vec {
 func findStartingPoints(bondary point.VecList) point.VecList {
 	currentVec, indexOfClosest := bondary.FindCLosestTo(point.Init(0, 0))
 	nextVector := bondary.Get(indexOfClosest + 1)
-	loopDirection := nextVector.Subtract(currentVec)
+	currentLoopDirection := nextVector.Subtract(currentVec)
 	nrOfRotations := 1
-	inwards := point.Rotate90counterclockwise(loopDirection)
+	inwards := point.Rotate90counterclockwise(currentLoopDirection)
 	if point.InnerProduct(inwards, currentVec) < 0 {
 		nrOfRotations = 3
 	}
 	startingPoints := point.InitVecList([]point.Vec{})
-	insideCandidate := nextVector.Add(point.Rotate90counterclockwiseMultipleTimes(loopDirection, nrOfRotations))
+	inwards = point.Rotate90counterclockwiseMultipleTimes(currentLoopDirection, nrOfRotations)
+	insideCandidate := nextVector.Add(inwards)
 	if !bondary.Has(insideCandidate) {
 		startingPoints.Append(insideCandidate)
 	}
 	for i := 1; i < bondary.Len(); i++ {
 		currentVec := bondary.Get(i)
 		nextVector = bondary.Get(i + 1)
-		loopDirection = nextVector.Subtract(currentVec)
-		insideCandidate = nextVector.Add(point.Rotate90counterclockwiseMultipleTimes(loopDirection, nrOfRotations))
-		insideCandidate2 := currentVec.Add(point.Rotate90counterclockwiseMultipleTimes(loopDirection, nrOfRotations))
+		nextNextVector := bondary.Get(i + 2)
+		currentLoopDirection = nextVector.Subtract(currentVec)
+		nextLoopDirection := nextNextVector.Subtract(nextVector)
+		inwards = point.Rotate90counterclockwiseMultipleTimes(currentLoopDirection, nrOfRotations)
+		insideCandidate = nextVector.Add(inwards)
 		if !bondary.Has(insideCandidate) && !startingPoints.Has(insideCandidate) {
 			startingPoints.Append(insideCandidate)
 		}
-		if !bondary.Has(insideCandidate2) && !startingPoints.Has(insideCandidate2) {
-			startingPoints.Append(insideCandidate)
+		if point.InnerProduct(nextLoopDirection, inwards) == -1 {
+			startingPoints.Append(nextVector.Add(currentLoopDirection))
 		}
 
 	}
