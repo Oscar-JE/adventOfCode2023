@@ -31,14 +31,14 @@ func TestStringRepFromInstructions(t *testing.T) {
 
 func TestExpand(t *testing.T) {
 	u := Init([]linearalgebra.Vec{linearalgebra.InitVec(1, 1)})
-	expanded := u.Expand(1)
+	expanded := u.Expand(2)
 	fmt.Println(u)
 	fmt.Println(expanded)
 }
 
 func TestExpandedInstructionExample(t *testing.T) {
 	u := unexpanded()
-	expanded := u.Expand(1)
+	expanded := u.Expand(2)
 	fmt.Println(expanded)
 }
 

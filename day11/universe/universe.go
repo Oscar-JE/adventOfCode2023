@@ -59,7 +59,8 @@ func (u Univers) emptyrow(row int) bool {
 }
 
 func (u *Univers) expandRowsBelow(row int, multiple int) {
-	rowExpander := linearalgebra.InitVec(1, 0).Multiply(multiple)
+	howManyToAdd := multiple - 1
+	rowExpander := linearalgebra.InitVec(1, 0).Multiply(howManyToAdd)
 	for i := range u.galaxyLocations {
 		if u.galaxyLocations[i].GetX() > row {
 			u.galaxyLocations[i] = linearalgebra.Add(u.galaxyLocations[i], rowExpander)
@@ -77,7 +78,8 @@ func (u Univers) emptyCol(col int) bool {
 }
 
 func (u *Univers) expandColsTOTheRight(col int, multiple int) {
-	colExpander := linearalgebra.InitVec(0, 1).Multiply(multiple)
+	howManyToAdd := multiple - 1
+	colExpander := linearalgebra.InitVec(0, 1).Multiply(howManyToAdd)
 	for i := range u.galaxyLocations {
 		if u.galaxyLocations[i].GetY() > col {
 			u.galaxyLocations[i] = linearalgebra.Add(u.galaxyLocations[i], colExpander)

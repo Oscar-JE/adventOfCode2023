@@ -11,11 +11,11 @@ import (
 func main() {
 	positions := parseInput()
 	u := universe.Init(positions)
-	fmt.Println(u.SillyExpandAndSumDistance(10))
+	fmt.Println(u.SillyExpandAndSumDistance(1000000))
 }
 
 func parseInput() []linearalgebra.Vec {
-	file, err := os.Open("input_short.txt")
+	file, err := os.Open("input.txt")
 	if err != nil {
 		panic("file not found")
 	}
