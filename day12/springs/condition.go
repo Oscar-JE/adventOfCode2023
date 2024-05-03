@@ -20,3 +20,13 @@ func (c Condition) String() string {
 	runeMapping := []rune{'.', '#', '?'}
 	return string(runeMapping[c.condition])
 }
+
+func Init(r rune) Condition {
+	if r == '.' {
+		return Operational()
+	} else if r == '#' {
+		return Damaged()
+	} else {
+		return Unknown()
+	}
+}
