@@ -6,10 +6,15 @@ import (
 )
 
 func NumberOfCombination(f field.Field, o order.Order) int {
-	if o.Len() == 1 {
-		block := o.Pop()
-		posiblePlacements := f.PossiblePlacements(block)
-		return len(posiblePlacements)
+	if o.Len() == 0 {
+		return 1
 	}
-	return 5
+	sum := 0
+	block := o.Pop()
+	posiblePlacements := f.PossiblePlacements(block)
+	for _, placement := range posiblePlacements {
+		subField := f.SubField(placement + block + 1)
+		sum += NumberOfCombination(subField, o)
+	}
+	return sum
 }

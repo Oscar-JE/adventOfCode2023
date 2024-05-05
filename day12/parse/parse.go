@@ -11,9 +11,8 @@ func Line(s string) (field.Field, order.Order) {
 	fieldRepAndOrderRep := strings.Split(s, " ")
 	fieldRep := fieldRepAndOrderRep[0]
 	orderRep := fieldRepAndOrderRep[1]
-	runes := []rune(fieldRep)
 	orderList := commaSeparatedToLit(orderRep)
-	return field.Init(runes), order.Init(orderList)
+	return field.Init(fieldRep), order.Init(orderList)
 }
 
 func commaSeparatedToLit(s string) []int {

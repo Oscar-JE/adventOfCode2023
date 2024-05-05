@@ -8,29 +8,30 @@ import (
 
 // flytta dessa tester ner till field istället. De passar bättre där
 
-func TestTrivialBaseCase(t *testing.T) {
-	f := field.Init("#")
-	o := order.Init([]int{1})
+func TestCaseInstruktion1(t *testing.T) {
+	f := field.Init("???.###")
+	o := order.Init([]int{1, 1, 3})
 	res := NumberOfCombination(f, o)
 	if res != 1 {
-		t.Errorf("Något är brutalt fel")
+		t.Errorf("första testcaset från instruktionen failede res var %d . Men borde vara 1", res)
 	}
 }
 
-func TestSmpleBaseCase(t *testing.T) {
-	f := field.Init("?.?")
-	o := order.Init([]int{1})
+func TestCaseInstruktion2(t *testing.T) {
+	f := field.Init(".??..??...?##.")
+	o := order.Init([]int{1, 1, 3})
 	res := NumberOfCombination(f, o)
-	if res != 2 {
-		t.Errorf("nummber of combination returned wrong in the case ?.? 1")
+	if res != 4 {
+		t.Errorf("första testcaset från instruktionen failede res var %d . Men borde vara %d", res, 4)
 	}
 }
 
-func TestRestriktion(t *testing.T) {
-	f := field.Init("#.?")
-	o := order.Init([]int{1})
+func TestCaseInstruktion3(t *testing.T) {
+	f := field.Init("?#?#?#?#?#?#?#?")
+	o := order.Init([]int{1, 3, 1, 6})
 	res := NumberOfCombination(f, o)
-	if res != 1 {
-		t.Errorf("dags att läsa instructionerna igen #.? 1 , ska vara 1 var  med var %d", res)
+	expected := 1
+	if res != expected {
+		t.Errorf("första testcaset från instruktionen failede res var %d . Men borde vara %d", res, expected)
 	}
 }

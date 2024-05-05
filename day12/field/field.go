@@ -82,3 +82,10 @@ func (f Field) isSeparator(index int) bool {
 	}
 	return f.layout[index] == springs.Operational() || f.layout[index] == springs.Unknown()
 }
+
+func (f Field) SubField(index int) Field {
+	if index < len(f.layout) {
+		return Field{layout: f.layout[index:]}
+	}
+	return Field{layout: []springs.Condition{}}
+}
