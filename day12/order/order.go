@@ -31,3 +31,12 @@ func (o *Order) Pop() int {
 	o.ordering = o.ordering[1:]
 	return element
 }
+
+func (o *Order) Unfold(times int) {
+	length := o.Len()
+	for i := 0; i < times; i++ {
+		for j := 0; j < length; j++ {
+			o.ordering = append(o.ordering, o.ordering[j])
+		}
+	}
+}

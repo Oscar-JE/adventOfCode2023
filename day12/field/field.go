@@ -98,3 +98,14 @@ func (f Field) HasDamaged() bool {
 	}
 	return false
 }
+
+func (f *Field) Unfold(times int) {
+	length := len(f.layout)
+	for i := 0; i < times; i++ {
+		f.layout = append(f.layout, springs.Unknown())
+		for j := 0; j < length; j++ {
+			f.layout = append(f.layout, f.layout[j])
+		}
+
+	}
+}
