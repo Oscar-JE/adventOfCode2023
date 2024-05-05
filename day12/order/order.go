@@ -18,3 +18,16 @@ func (o Order) Eq(other Order) bool {
 	}
 	return eq
 }
+
+func (o Order) Len() int {
+	return len(o.ordering)
+}
+
+func (o *Order) Pop() int {
+	if len(o.ordering) == 0 {
+		return -1 // bättre med error här kanske
+	}
+	element := o.ordering[0]
+	o.ordering = o.ordering[1:]
+	return element
+}
