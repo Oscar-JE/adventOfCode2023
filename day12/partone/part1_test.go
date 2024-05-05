@@ -17,6 +17,15 @@ func TestCaseInstruktion1(t *testing.T) {
 	}
 }
 
+func TestCaseInstruktionGotcha(t *testing.T) {
+	f := field.Init("???.###.#")
+	o := order.Init([]int{1, 1, 3})
+	res := NumberOfCombination(f, o)
+	if res != 0 {
+		t.Errorf("Gotcha var %d . Men borde vara 0", res)
+	}
+}
+
 func TestCaseInstruktion2(t *testing.T) {
 	f := field.Init(".??..??...?##.")
 	o := order.Init([]int{1, 1, 3})

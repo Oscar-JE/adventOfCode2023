@@ -7,7 +7,11 @@ import (
 
 func NumberOfCombination(f field.Field, o order.Order) int {
 	if o.Len() == 0 {
-		return 1
+		if f.HasDamaged() {
+			return 0
+		} else {
+			return 1
+		}
 	}
 	sum := 0
 	block := o.Pop()

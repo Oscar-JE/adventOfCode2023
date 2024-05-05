@@ -89,3 +89,12 @@ func (f Field) SubField(index int) Field {
 	}
 	return Field{layout: []springs.Condition{}}
 }
+
+func (f Field) HasDamaged() bool {
+	for _, s := range f.layout {
+		if s == springs.Damaged() {
+			return true
+		}
+	}
+	return false
+}
