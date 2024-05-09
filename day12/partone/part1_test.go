@@ -6,8 +6,6 @@ import (
 	"testing"
 )
 
-// flytta dessa tester ner till field istället. De passar bättre där
-
 func TestCaseInstruktion1(t *testing.T) {
 	f := field.Init("???.###")
 	o := order.Init([]int{1, 1, 3})

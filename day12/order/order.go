@@ -40,3 +40,21 @@ func (o *Order) Unfold(times int) {
 		}
 	}
 }
+
+func (o Order) ExpandLeft(nr int) Order {
+	res := o.ordering
+	for i := 0; i < nr; i++ {
+		j := len(o.ordering) - 1 - i%(len(o.ordering))
+		res = append([]int{o.ordering[j]}, res...)
+	}
+	return Order{ordering: res}
+}
+
+func (o Order) ExpandRight(nr int) Order { // kräver test dessa två
+	res := o.ordering
+	for i := 0; i < nr; i++ {
+		j := i % len(o.ordering)
+		res = append(res, o.ordering[j])
+	}
+	return Order{ordering: res}
+}
