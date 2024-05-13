@@ -2,38 +2,37 @@ package order
 
 import "testing"
 
-func TestRollBeginningHappy(t *testing.T) {
-	order := Init([]int{1, 2, 3})
-	expected := Init([]int{3})
-	res := order.RollBeginning(2)
-	if !res.Eq(expected) {
-		t.Errorf("review roll beginning for order")
+func TestRolingRsizeTrivial(t *testing.T) {
+	o := Init([]int{})
+	res := o.RolingRsize(0, 0)
+	if !o.Eq(res) {
+		t.Errorf("RolingRsize(0,0) is not a Identity mapping")
 	}
 }
 
-func TestRollBegginingNegativ(t *testing.T) {
-	order := Init([]int{1, 2, 3})
-	expecteed := Init([]int{3, 1, 2, 3, 1, 2, 3})
-	res := order.RollBeginning(-4)
-	if !res.Eq(expecteed) {
-		t.Errorf("roll left beter sig konstigt")
+func TestRolingRsizeExpand(t *testing.T) {
+	o := Init([]int{1, 2, 3})
+	res := o.RolingRsize(-1, 1)
+	expected := Init([]int{3, 1, 2, 3, 1})
+	if !res.Eq(expected) {
+		t.Errorf("RolingRsize(-1,1)")
 	}
 }
 
-func TestRollEnd(t *testing.T) {
-	order := Init([]int{1, 2, 3})
-	expected := Init([]int{1, 2, 3, 1, 2, 3, 1})
-	res := order.RollEnd(4)
+func TestRolingRsizeContract(t *testing.T) {
+	o := Init([]int{1, 2, 3})
+	res := o.RolingRsize(1, -1)
+	expected := Init([]int{2})
 	if !res.Eq(expected) {
-		t.Errorf("review roll end for order")
+		t.Errorf("RolingRsize(1,-11)")
 	}
 }
 
-func TestRollEndNegative(t *testing.T) {
-	order := Init([]int{1, 2, 3})
-	expected := Init([]int{1})
-	res := order.RollEnd(-2)
-	if !res.Eq(expected) {
-		t.Errorf("review expand right for order")
+func TestRolingRsizeIdentity(t *testing.T) {
+	o := Init([]int{1, 2, 3})
+	res1 := o.RolingRsize(6, 6)
+	res2 := o.RolingRsize(-9, -9)
+	if !res1.Eq(res2) && res2.Eq(o) {
+		t.Errorf("RolingRsizeIdentity")
 	}
 }

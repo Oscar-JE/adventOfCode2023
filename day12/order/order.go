@@ -41,32 +41,35 @@ func (o *Order) Unfold(times int) {
 	}
 }
 
-func (o Order) RollBeginning(startIndex int) Order {
-	res := o.ordering
-	if startIndex < 0 {
-		for i := -1; i >= startIndex; i-- {
-			j := (i + 10*o.Len()) % o.Len()
-			res = append([]int{o.ordering[j]}, res...)
+func (o Order) RolingRsize(left int, right int) Order {
+	// häri gömmer vi logiken medvilken ordning och liknande
+	orginalLista := o.ordering
+	// expanderande operationer först
+	res := orginalLista
+	if left < 0 {
+		expandLeft := []int{}
+		for i := -1; i >= left; i-- {
+			j := (i + 10*o.Len()) % o.Len() // 10 an för att undvika negativa tal
+			expandLeft = append([]int{orginalLista[j]}, expandLeft...)
 		}
-	} else if 0 <= startIndex && startIndex < o.Len() {
-		res = res[startIndex:]
-	} else {
-		res = []int{}
+		res = append(expandLeft, res...)
 	}
-	return Order{ordering: res}
-}
+	if right > 0 {
+		expandRight := []int{}
+		for i := range right {
+			j := i % o.Len()
+			expandRight = append(expandRight, o.ordering[j])
+		}
+		res = append(res, expandRight...)
+	}
+	if left >= 0 {
+		res = res[left:]
+	}
+	if right <= 0 {
+		res = res[:len(res)+right] // frågan är om det blir en minus etta här
+	}
 
-func (o Order) RollEnd(nr int) Order {
-	res := o.ordering
-	if nr <= -o.Len() {
-		res = []int{}
-	} else if -o.Len() < nr && nr < 0 {
-		res = o.ordering[:o.Len()+nr]
-	} else {
-		for i := range nr {
-			j := i % len(o.ordering)
-			res = append(res, o.ordering[j])
-		}
-	}
-	return Order{ordering: res}
+	// lite längre men jag tycker att den är lättare att förstå
+	return Init(res)
+
 }
