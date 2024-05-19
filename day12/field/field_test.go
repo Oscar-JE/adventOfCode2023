@@ -25,3 +25,7 @@ func TestRestriction(t *testing.T) {
 		t.Errorf("dags att läsa instructionerna igen #.? 1 , ska vara 1 var  med var %d", res)
 	}
 }
+
+func TestTakeLeft(t *testing.T) {
+
+}

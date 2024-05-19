@@ -99,7 +99,7 @@ func (f Field) HasDamaged() bool {
 	return false
 }
 
-func (f *Field) Unfold(times int) {
+func (f *Field) Unfold(times int) { // denna komme tas bort
 	length := len(f.layout)
 	for i := 0; i < times; i++ {
 		f.layout = append(f.layout, springs.Unknown())
@@ -108,4 +108,19 @@ func (f *Field) Unfold(times int) {
 		}
 
 	}
+}
+
+func (f Field) RestrictFromLeftAndRight(leftTaken int, righTaken int) (Field, bool) {
+	if leftTaken == -1 && righTaken == -1 {
+		return f, true
+	}
+	return f, false
+}
+
+func (f Field) RestritLeft(leftTaken int) (Field, bool) {
+	return f, true
+}
+
+func (f Field) RestritRight(rightTaken int) (Field, bool) {
+	return f, true
 }
