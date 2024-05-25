@@ -118,7 +118,31 @@ func (f Field) RestrictFromLeftAndRight(leftTaken int, righTaken int) (Field, bo
 }
 
 func (f Field) RestritLeft(leftTaken int) (Field, bool) {
-	return f, true
+	if leftTaken >= len(f.layout) {
+		return f, false
+	}
+	if leftTaken < 0 { // kan försöka lägga in betydelse i negativa tal men inte just nu
+		return f, true
+	}
+	// hantering av mellanrummet
+	if !(f.layout[leftTaken] == springs.Operational() || f.layout[leftTaken] == springs.Unknown()) {
+		return f, false
+	} else {
+		f.layout[leftTaken] = springs.Operational()
+	}
+	possible := true
+	for i := leftTaken - 1; i >= 0; i-- {
+		loopSpring := f.layout[i]
+		if loopSpring == springs.Damaged() {
+			continue
+		} else if loopSpring == springs.Unknown() {
+			f.layout[i] = springs.Damaged()
+		} else {
+			possible = false
+			break
+		}
+	}
+	return f, possible
 }
 
 func (f Field) RestritRight(rightTaken int) (Field, bool) {
