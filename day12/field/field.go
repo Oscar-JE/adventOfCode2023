@@ -146,5 +146,30 @@ func (f Field) RestritLeft(leftTaken int) (Field, bool) {
 }
 
 func (f Field) RestritRight(rightTaken int) (Field, bool) {
-	return f, true
+	if rightTaken >= len(f.layout) {
+		return f, false
+	}
+	if rightTaken < 0 { // kan försöka lägga in betydelse i negativa tal men inte just nu
+		return f, true
+	}
+	// hantering av mellanrummet
+	lowestIndex := len(f.layout) - 1 - rightTaken
+	if !(f.layout[lowestIndex] == springs.Operational() || f.layout[lowestIndex] == springs.Unknown()) {
+		return f, false
+	} else {
+		f.layout[lowestIndex] = springs.Operational()
+	}
+	possible := true
+	for i := lowestIndex + 1; i < len(f.layout); i++ {
+		loopSpring := f.layout[i]
+		if loopSpring == springs.Damaged() {
+			continue
+		} else if loopSpring == springs.Unknown() {
+			f.layout[i] = springs.Damaged()
+		} else {
+			possible = false
+			break
+		}
+	}
+	return f, possible
 }

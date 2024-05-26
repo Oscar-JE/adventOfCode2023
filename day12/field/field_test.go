@@ -72,3 +72,50 @@ func TestTakeLeftUnHappy(t *testing.T) {
 		t.Errorf("impossible take left")
 	}
 }
+
+func TestTakeLRightTrival(t *testing.T) {
+	f := Init("..?")
+	res, ok := f.RestritRight(-1)
+	if !ok {
+		t.Errorf("wrong restriktion control")
+	}
+	expected := Init("..?")
+	if !res.Eq(expected) {
+		t.Errorf("wrong expected output")
+	}
+}
+
+func TestTakeRightZero(t *testing.T) {
+	f := Init("..?")
+	res, ok := f.RestritRight(0)
+	if !ok {
+		t.Errorf("wrong restriktion control")
+	}
+	expected := Init("...")
+	if !res.Eq(expected) {
+		t.Errorf("wrong expected output")
+	}
+}
+
+func TestTakeRightOne(t *testing.T) {
+	f := Init("..?")
+	res, ok := f.RestritRight(1)
+	expected := Init("..#")
+	if !res.Eq(expected) || !ok {
+		t.Errorf("investigate TakeLefOne")
+	}
+}
+
+func TestTakeRightUnHappy(t *testing.T) {
+	noSpace := Init("###")
+	impossibleBroken := Init(".#.")
+	_, takeFromNoSpace := noSpace.RestritRight(0)
+	if takeFromNoSpace {
+		t.Errorf("impossible take")
+	}
+	_, stumble := impossibleBroken.RestritRight(2)
+
+	if stumble {
+		t.Errorf("impossible take left")
+	}
+}
