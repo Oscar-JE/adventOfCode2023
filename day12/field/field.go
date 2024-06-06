@@ -111,10 +111,9 @@ func (f *Field) Unfold(times int) { // denna komme tas bort
 }
 
 func (f Field) RestrictFromLeftAndRight(leftTaken int, righTaken int) (Field, bool) {
-	if leftTaken == -1 && righTaken == -1 {
-		return f, true
-	}
-	return f, false
+	f, leftOk := f.RestritLeft(leftTaken)
+	f, rightOk := f.RestritRight(righTaken)
+	return f, leftOk && rightOk
 }
 
 func (f Field) RestritLeft(leftTaken int) (Field, bool) {
@@ -172,4 +171,8 @@ func (f Field) RestritRight(rightTaken int) (Field, bool) {
 		}
 	}
 	return f, possible
+}
+
+func (f Field) Len() int {
+	return len(f.layout)
 }

@@ -5,7 +5,7 @@ import (
 	"day12/field"
 	"day12/order"
 	"day12/parse"
-	"day12/parttwo"
+	"day12/partone"
 	"fmt"
 	"os"
 	"time"
@@ -27,7 +27,7 @@ func main() {
 	linenumber := 1
 	for _, input := range inputs {
 		fmt.Println("workin on line number d%", linenumber)
-		sum += parttwo.NumberOfCombination(input.F, input.O)
+		sum += partone.NumberOfCombination(input.F, input.O)
 		linenumber++
 	}
 	fmt.Println(sum)
