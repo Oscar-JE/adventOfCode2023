@@ -17,20 +17,41 @@ func Part1SubProblem(f field.Field, s solution.SolutionKey) int {
 
 func Solve(f field.Field, o order.Order, repitition int) int {
 	o.Unfold(repitition)
-	nrSolutions := recursivePart(f, o, repitition)
-	return 5 * len(nextParts)
+	nrSolutions := recursivePart(f, o, repitition, 0)
+	return nrSolutions
 }
 
-func recursivePart(f field.Field, o order.Order, deept int) int {
+func recursivePart(f field.Field, o order.Order, deept int, leftTaken int) int { // den innan biten måste in här
+	var parts []solution.SolutionKey
+	if deept != 0 {
+		parts = findPossibleNextPuzzleMiddleParts(f, o, leftTaken)
+	} else {
+		parts = findPossibleNextPuzzleMiddleLast(f, o, leftTaken)
+	}
+	sum := 0
+	for _, sol := range parts {
+		// måste räkna ut en suborder här
+		// logik för att räkna ut vad nästas leftdemand från förras right måste räklnas ut någonstans
+		sum += Part1SubProblem(f, sol) * recursivePart(f, o, deept-1, sol.RightDemand) // här bör det ske tekenskillnader
+	}
+	return sum
+}
 
+func findPossibleNextPuzzleMiddleLast(f field.Field, o order.Order, leftTaken int) []solution.SolutionKey {
+	unfiltered := findPossibleNextPuzzleMiddleParts(f, o, leftTaken)
+	filtered := []solution.SolutionKey{}
+	for _, sol := range unfiltered {
+		if sol.RightDemand == -1 {
+			filtered = append(filtered, sol)
+		}
+	}
+	return filtered
 }
 
 func findPossibleNextPuzzleMiddleParts(f field.Field, o order.Order, leftTaken int) []solution.SolutionKey {
-	// kan göra oss av med f som en variabel och enbart gå på längden
 	solutions := []solution.SolutionKey{}
 	solutions = append(solutions, solution.Init(leftTaken, order.Init([]int{}), -1))
-
-	lastSolution := solutions[len(solutions)-1] // ja men det börjar kännas bra
+	lastSolution := solutions[len(solutions)-1]
 	for lastSolution.LeastSpotsOccupied() < f.Len() {
 		slidingBlok := o.Pop()
 		solutions = append(solutions, solutionsWithAddedBlock(lastSolution, slidingBlok)...)
