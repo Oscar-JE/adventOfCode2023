@@ -32,6 +32,7 @@ func recursivePart(f field.Field, o order.Order, deept int, leftTaken int) int {
 	for _, sol := range parts {
 		// måste räkna ut en suborder här
 		// logik för att räkna ut vad nästas leftdemand från förras right måste räklnas ut någonstans
+		// lösning göt om solution key right och left till block med index. Då går ingen information förlorad
 		sum += Part1SubProblem(f, sol) * recursivePart(f, o, deept-1, sol.RightDemand) // här bör det ske tekenskillnader
 	}
 	return sum
