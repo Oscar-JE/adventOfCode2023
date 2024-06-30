@@ -7,67 +7,43 @@ import (
 	"day12/parttwo/solution"
 )
 
-func Part1SubProblem(f field.Field, s solution.SolutionKey) int {
-	restriktedFeild, ok := f.RestrictFromLeftAndRight(s.LeftDemand, s.RightDemand)
+func SolvePart1Varant(f field.Field, s solution.SolutionKey) int {
+	f, ok := f.RestrictFromLeftAndRight(s.LeftDemand, s.RightDemand)
 	if !ok {
 		return 0
 	}
-	return partone.NumberOfCombination(restriktedFeild, s.SubOrder)
+	return partone.NumberOfCombination(f, s.SubOrder)
 }
 
-func Solve(f field.Field, o order.Order, repitition int) int {
-	o.Unfold(repitition)
-	nrSolutions := recursivePart(f, o, repitition, 0)
-	return nrSolutions
+func FindAllPossibleNextkeysMiddle(previous solution.SubProblem, remainingOrder order.Order) []solution.SubProblem {
+	// här måste vi definiera hur pusselbitarna ska sättas ihop
+	// behöver en typ som inte är solutionkey utan subProblem eller liknande
+	// det bör finnas ett enklare sätt att få till detta
+	var nextSubproblems []solution.SubProblem = []solution.SubProblem{}
+	return nextSubproblems
 }
 
-func recursivePart(f field.Field, o order.Order, deept int, leftTaken int) int { // den innan biten måste in här
-	var parts []solution.SolutionKey
-	if deept != 0 {
-		parts = findPossibleNextPuzzleMiddleParts(f, o, leftTaken)
-	} else {
-		parts = findPossibleNextPuzzleMiddleLast(f, o, leftTaken)
+func NumberOfCombination(f field.Field, o order.Order, dept int) int {
+	o.Unfold(dept)                                               // hur många gånger det skulle upprepas
+	original := generation{solution.NoConnectionDDemand(), o, 1} // det här kanske fungerar
+	childrenOfTime := []generation{original}
+	for i := 0; i < dept; i++ {
+		nextChildren := nextGeneration(childrenOfTime, f)
+		childrenOfTime = nextChildren
 	}
 	sum := 0
-	for _, sol := range parts {
-		// måste räkna ut en suborder här
-		// logik för att räkna ut vad nästas leftdemand från förras right måste räklnas ut någonstans
-		// lösning göt om solution key right och left till block med index. Då går ingen information förlorad
-		sum += Part1SubProblem(f, sol) * recursivePart(f, o, deept-1, sol.RightDemand) // här bör det ske tekenskillnader
+	for _, el := range childrenOfTime {
+		sum += el.nrSolutions
 	}
 	return sum
 }
 
-func findPossibleNextPuzzleMiddleLast(f field.Field, o order.Order, leftTaken int) []solution.SolutionKey {
-	unfiltered := findPossibleNextPuzzleMiddleParts(f, o, leftTaken)
-	filtered := []solution.SolutionKey{}
-	for _, sol := range unfiltered {
-		if sol.RightDemand == -1 {
-			filtered = append(filtered, sol)
-		}
-	}
-	return filtered
+func nextGeneration(parents []generation, f field.Field) []generation {
+	return []generation{}
 }
 
-func findPossibleNextPuzzleMiddleParts(f field.Field, o order.Order, leftTaken int) []solution.SolutionKey {
-	solutions := []solution.SolutionKey{}
-	solutions = append(solutions, solution.Init(leftTaken, order.Init([]int{}), -1))
-	lastSolution := solutions[len(solutions)-1]
-	for lastSolution.LeastSpotsOccupied() < f.Len() {
-		slidingBlok := o.Pop()
-		solutions = append(solutions, solutionsWithAddedBlock(lastSolution, slidingBlok)...)
-		lastSolution = solutions[len(solutions)-1]
-	}
-	return solutions
-}
-
-func solutionsWithAddedBlock(lastSolution solution.SolutionKey, slidingBlok int) []solution.SolutionKey {
-	solutions := []solution.SolutionKey{}
-	for i := range slidingBlok {
-		sol := lastSolution
-		sol.RightDemand = i
-		solutions = append(solutions, sol)
-	}
-	solutions = append(solutions, solution.Init(lastSolution.LeftDemand, lastSolution.SubOrder.Append(slidingBlok), -1))
-	return solutions
+type generation struct {
+	prevRightConnection solution.Connection
+	remainingOrder      order.Order
+	nrSolutions         int
 }

@@ -1,32 +1,5 @@
 package parttwo
 
-import (
-	"day12/field"
-	"day12/order"
-	"day12/parttwo/solution"
-	"testing"
-)
-
-func TestSubproblemSolver(t *testing.T) {
-	f := field.Init("?.?")
-	o := order.Init([]int{1, 1})
-	sk := solution.SolutionKey{LeftDemand: 0, RightDemand: 0, SubOrder: o}
-	res := Part1SubProblem(f, sk)
-	if res != 0 {
-		t.Errorf("impossible soluitions should return 0")
-	}
-}
-
-func TestSubproblemSolverTrivial(t *testing.T) {
-	f := field.Init("?.?")
-	o := order.Init([]int{1, 1})
-	sk := solution.SolutionKey{LeftDemand: -1, RightDemand: -1, SubOrder: o}
-	res := Part1SubProblem(f, sk)
-	if res != 1 {
-		t.Errorf("right answer is 1")
-	}
-}
-
 // func TestCaseInstruktion1(t *testing.T) {
 // 	t.Skip()
 // 	f := field.Init("???.###")
