@@ -14,7 +14,6 @@ func main() {
 	if err != nil {
 		panic("no file found with that seekedname")
 	}
-	fmt.Println("hej på dig")
 	text := string(fileContent)
 	matrixReps := strings.Split(text, "\n\n")
 	matrixs := []matrix.Matrix{}

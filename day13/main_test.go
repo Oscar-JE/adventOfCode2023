@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestReflectionRow(t *testing.T) { //kör samma exempel som ur instruktionerna
+func TestReflectionRow(t *testing.T) {
 	m := parsestr.ParseFromString("#.##..##.\n..#.##.#.\n##......#\n##......#\n..#.##.#.\n..##..##.\n#.#.##.#.")
 	colRef := reflectionCol(m)
 	if colRef != 5 {
