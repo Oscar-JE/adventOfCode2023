@@ -1,13 +1,13 @@
 package reflection
 
-type CommonRef struct { // jobbar med antagandet att det är en unik reflektion
+type CommonRef struct {
 	refIndex []int
 }
 
-func FindPossibleRef(values []int) CommonRef { // börjar med den dummaste långsamma implementationen
+func FindPossibleRef(values []int) CommonRef {
 	refindxes := []int{}
 	for i := range values {
-		if isReflektionIndex(i, values) {
+		if IsReflektionIndex(i, values) {
 			refindxes = append(refindxes, i)
 		}
 	}
@@ -21,14 +21,14 @@ func (c CommonRef) HasReflection() bool {
 func (c *CommonRef) Align(values []int) {
 	newIndexes := []int{}
 	for _, index := range c.refIndex {
-		if isReflektionIndex(index, values) {
+		if IsReflektionIndex(index, values) {
 			newIndexes = append(newIndexes, index)
 		}
 	}
 	c.refIndex = newIndexes
 }
 
-func isReflektionIndex(index int, values []int) bool { // index till höger om reflextionen är det som är viktigt
+func IsReflektionIndex(index int, values []int) bool {
 	loweLimit := 0
 	upperLimit := len(values)
 	loweRefIndex := index

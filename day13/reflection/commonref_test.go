@@ -6,20 +6,20 @@ import (
 
 func TestIsReflectionindex(t *testing.T) {
 	values := []int{0, 0}
-	if !isReflektionIndex(0, values) {
+	if !IsReflektionIndex(0, values) {
 		t.Errorf("rethink isReflektion")
 	}
-	if isReflektionIndex(1, values) {
+	if IsReflektionIndex(1, values) {
 		t.Errorf("Can never have an mirror outside the field")
 	}
 }
 
 func TestIsReflectionindexLongExample(t *testing.T) {
 	values := []int{1, 1, 0, 1, 1, 0, 1}
-	if !isReflektionIndex(3, values) {
+	if !IsReflektionIndex(3, values) {
 		t.Errorf("Examin the long case for isReflectionIndex")
 	}
-	if !isReflektionIndex(0, values) {
+	if !IsReflektionIndex(0, values) {
 		t.Errorf("Examin the long case for isReflectionIndex")
 	}
 }

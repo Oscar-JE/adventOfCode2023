@@ -28,3 +28,19 @@ func TestReflectionScore2(t *testing.T) {
 		t.Errorf("investigate first example from instructions")
 	}
 }
+
+func TestPart2Reflection(t *testing.T) {
+	m := parsestr.ParseFromString("#.##..##.\n..#.##.#.\n##......#\n##......#\n..#.##.#.\n..##..##.\n#.#.##.#.")
+	score := reflectionScore2(m)
+	if score != 300 {
+		t.Errorf("är testet korrekt")
+	}
+}
+
+func TestPart2Reflection2(t *testing.T) {
+	m := parsestr.ParseFromString("#...##..#\n#....#..#\n..##..###\n#####.##.\n#####.##.\n..##..###\n#....#..#")
+	score := reflectionScore2(m)
+	if score != 100 {
+		t.Errorf("är testet korrekt")
+	}
+}
