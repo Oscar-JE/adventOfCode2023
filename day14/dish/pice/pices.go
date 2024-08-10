@@ -48,3 +48,7 @@ func (p Pice) ToRune() rune {
 		return '.'
 	}
 }
+
+func (p Pice) String() string {
+	return string(p.ToRune())
+}

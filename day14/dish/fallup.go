@@ -1,8 +1,18 @@
 package dish
 
-import "day14/dish/pice"
+import (
+	"day14/dish/matrix"
+	"day14/dish/pice"
+)
 
 // varför göra det komplicerat
+
+func fallDown(pices []pice.Pice) []pice.Pice {
+	p := matrix.Invert(pices)
+	p = fallUpp(p)
+	p = matrix.Invert(p)
+	return p
+}
 
 func fallUpp(pices []pice.Pice) []pice.Pice {
 	for i, el := range pices {

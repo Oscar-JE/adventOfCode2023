@@ -24,3 +24,14 @@ func TestFallUpp(t *testing.T) {
 		}
 	}
 }
+
+func TestFallDown(t *testing.T) {
+	pices := []pice.Pice{pice.Empty, pice.Movable, pice.Empty}
+	expected := []pice.Pice{pice.Empty, pice.Empty, pice.Movable}
+	res := fallDown(pices)
+	for i, el := range expected {
+		if el != res[i] {
+			t.Errorf("examin fallDown")
+		}
+	}
+}

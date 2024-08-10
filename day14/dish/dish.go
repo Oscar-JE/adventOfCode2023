@@ -36,6 +36,64 @@ func (d *Dish) TiltNorth() {
 	}
 }
 
+func (d *Dish) TiltSouth() {
+	nrColumns := d.layout.GetCols()
+	for j := range nrColumns {
+		column := d.layout.GetColumn(j)
+		tilted := fallDown(column)
+		d.layout.SetColumn(tilted, j)
+	}
+}
+
+func (d *Dish) TiltWest() {
+	nrRows := d.layout.GetRows()
+	for i := range nrRows {
+		row := d.layout.GetRow(i)
+		tilted := fallUpp(row)
+		d.layout.SetRow(tilted, i)
+	}
+}
+
+func (d *Dish) TiltEast() {
+	nrRows := d.layout.GetRows()
+	for i := range nrRows {
+		row := d.layout.GetRow(i)
+		tilted := fallDown(row)
+		d.layout.SetRow(tilted, i)
+	}
+}
+
+func (d *Dish) Cycle() {
+	d.TiltNorth()
+	d.TiltWest()
+	d.TiltSouth()
+	d.TiltEast()
+}
+
+func (d Dish) CycleForever() []matrix.Matrix {
+	repetitions := 1001 // 1000000000
+	history := []matrix.Matrix{}
+	history = append(history, d.layout.DeepCopy())
+	for i := 0; i < repetitions; i++ {
+		d.Cycle()
+		if seen(history, d.layout) {
+			history = append(history, d.layout)
+			break
+		}
+		history = append(history, d.layout.DeepCopy())
+	}
+	return history
+}
+
+func seen(history []matrix.Matrix, mat matrix.Matrix) bool {
+	for i := range history {
+		if history[i].Eq(mat) {
+			return true
+		}
+	}
+	return false
+}
+
 func (d Dish) Score() int {
 	score := 0
 	nrColumns := d.layout.GetCols()
@@ -49,4 +107,26 @@ func (d Dish) Score() int {
 func (d Dish) Calculate() int {
 	d.TiltNorth()
 	return d.Score()
+}
+
+func (d Dish) Calculate2() int {
+	history := d.CycleForever()
+	//räkna ut index i history som är relevant
+	joningIndex := indexOf(history, history[len(history)-1])
+	aktiveLen = len(history) - 1
+	d.layout = history[len(history)-1]
+	return d.Score()
+}
+
+func (d Dish) String() string {
+	return d.layout.String()
+}
+
+func indexOf(hist []matrix.Matrix, mat matrix.Matrix) int {
+	for i := range hist {
+		if hist[i].Eq(mat) {
+			return i
+		}
+	}
+	return len(hist)
 }
