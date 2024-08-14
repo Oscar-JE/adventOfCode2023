@@ -111,10 +111,10 @@ func (d Dish) Calculate() int {
 
 func (d Dish) Calculate2() int {
 	history := d.CycleForever()
-	//räkna ut index i history som är relevant
 	joningIndex := indexOf(history, history[len(history)-1])
-	aktiveLen = len(history) - 1
-	d.layout = history[len(history)-1]
+	aktiveLen := len(history) - 1
+	loopIndex := (1000000000 - joningIndex) % (aktiveLen - joningIndex)
+	d.layout = history[loopIndex+joningIndex]
 	return d.Score()
 }
 

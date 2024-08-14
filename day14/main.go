@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	content, err := os.ReadFile("short.txt")
+	content, err := os.ReadFile("big.txt")
 	if err != nil {
 		panic("file not found")
 	}
