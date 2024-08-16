@@ -41,7 +41,7 @@ func (o *Order) Unfold(times int) {
 	}
 }
 
-func (o Order) RolingRsize(left int, right int) Order {
+func (o Order) RolingRsize(left int, right int) Order { // denna kan vi nog ta bort
 	// häri gömmer vi logiken medvilken ordning och liknande
 	orginalLista := o.ordering
 	// expanderande operationer först
@@ -66,10 +66,17 @@ func (o Order) RolingRsize(left int, right int) Order {
 		res = res[left:]
 	}
 	if right <= 0 {
-		res = res[:len(res)+right] // frågan är om det blir en minus etta här
+		res = res[:len(res)+right]
 	}
-
-	// lite längre men jag tycker att den är lättare att förstå
 	return Init(res)
 
+}
+
+func (o Order) SubOrder(splitIndex int) (Order, Order) {
+	return Init(o.ordering[:splitIndex]), Init(o.ordering[splitIndex:])
+}
+
+func (o Order) Append(box int) Order {
+	ret := Init(append(o.ordering, box))
+	return ret
 }

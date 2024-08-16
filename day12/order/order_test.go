@@ -36,3 +36,12 @@ func TestRolingRsizeIdentity(t *testing.T) {
 		t.Errorf("RolingRsizeIdentity")
 	}
 }
+
+func TestSplitIndex(t *testing.T) {
+	o := Init([]int{1, 2, 3})
+	lowO, uppO := o.SubOrder(0)
+	lowExp, uppExp := Init([]int{1}), Init([]int{2, 3})
+	if lowExp.Eq(lowO) && uppExp.Eq(uppO) {
+		t.Errorf("fan")
+	}
+}

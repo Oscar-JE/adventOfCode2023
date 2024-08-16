@@ -99,7 +99,7 @@ func (f Field) HasDamaged() bool {
 	return false
 }
 
-func (f *Field) Unfold(times int) {
+func (f *Field) Unfold(times int) { // denna komme tas bort
 	length := len(f.layout)
 	for i := 0; i < times; i++ {
 		f.layout = append(f.layout, springs.Unknown())
@@ -108,4 +108,71 @@ func (f *Field) Unfold(times int) {
 		}
 
 	}
+}
+
+func (f Field) RestrictFromLeftAndRight(leftTaken int, righTaken int) (Field, bool) {
+	f, leftOk := f.RestritLeft(leftTaken)
+	f, rightOk := f.RestritRight(righTaken)
+	return f, leftOk && rightOk
+}
+
+func (f Field) RestritLeft(leftTaken int) (Field, bool) {
+	if leftTaken >= len(f.layout) {
+		return f, false
+	}
+	if leftTaken < 0 { // kan försöka lägga in betydelse i negativa tal men inte just nu
+		return f, true
+	}
+	// hantering av mellanrummet
+	if !(f.layout[leftTaken] == springs.Operational() || f.layout[leftTaken] == springs.Unknown()) {
+		return f, false
+	} else {
+		f.layout[leftTaken] = springs.Operational()
+	}
+	possible := true
+	for i := leftTaken - 1; i >= 0; i-- {
+		loopSpring := f.layout[i]
+		if loopSpring == springs.Damaged() {
+			continue
+		} else if loopSpring == springs.Unknown() {
+			f.layout[i] = springs.Damaged()
+		} else {
+			possible = false
+			break
+		}
+	}
+	return f, possible
+}
+
+func (f Field) RestritRight(rightTaken int) (Field, bool) {
+	if rightTaken >= len(f.layout) {
+		return f, false
+	}
+	if rightTaken < 0 { // kan försöka lägga in betydelse i negativa tal men inte just nu
+		return f, true
+	}
+	// hantering av mellanrummet
+	lowestIndex := len(f.layout) - 1 - rightTaken
+	if !(f.layout[lowestIndex] == springs.Operational() || f.layout[lowestIndex] == springs.Unknown()) {
+		return f, false
+	} else {
+		f.layout[lowestIndex] = springs.Operational()
+	}
+	possible := true
+	for i := lowestIndex + 1; i < len(f.layout); i++ {
+		loopSpring := f.layout[i]
+		if loopSpring == springs.Damaged() {
+			continue
+		} else if loopSpring == springs.Unknown() {
+			f.layout[i] = springs.Damaged()
+		} else {
+			possible = false
+			break
+		}
+	}
+	return f, possible
+}
+
+func (f Field) Len() int {
+	return len(f.layout)
 }
