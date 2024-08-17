@@ -1,6 +1,7 @@
 package main
 
 import (
+	"day15/hashmap"
 	"day15/hashone"
 	"fmt"
 	"os"
@@ -8,12 +9,12 @@ import (
 )
 
 func main() {
-	sum := 0
-	codes := parse("input.txt")
-	for _, code := range codes {
-		sum += hashone.Hash(code)
+	instuctions := parse("input.txt")
+	myMap := hashmap.Init()
+	for _, inst := range instuctions {
+		myMap.PerformInstruction(inst)
 	}
-	fmt.Println(sum)
+	fmt.Println(myMap.FocusingPower())
 }
 
 func parse(fileName string) []string {
@@ -23,4 +24,13 @@ func parse(fileName string) []string {
 	}
 	content := string(file)
 	return strings.Split(content, ",")
+}
+
+func partOne() {
+	sum := 0
+	codes := parse("input.txt")
+	for _, code := range codes {
+		sum += hashone.Hash(code)
+	}
+	fmt.Println(sum)
 }

@@ -14,6 +14,7 @@ func TestHash(t *testing.T) {
 	hashTester("pc-", 48, t)
 	hashTester("pc=6", 214, t)
 	hashTester("ot=7", 231, t)
+	hashTester("rn", 0, t)
 }
 
 func hashTester(in string, exp int, t *testing.T) {
