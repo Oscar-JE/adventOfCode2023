@@ -27,8 +27,7 @@ func (m *Map) PerformInstruction(inst string) {
 	if (!isRemove) && (!isAdd) {
 		panic("unknown operator")
 	}
-	// snyggare med utsortering av all data först
-	if isRemove { // förvirring
+	if isRemove {
 		label := strings.Replace(inst, "-", "", 1)
 		hashValue := hashone.Hash(label)
 		m.remove(label, hashValue)
@@ -47,7 +46,7 @@ func (m *Map) PerformInstruction(inst string) {
 }
 
 func (m *Map) remove(label string, hashValue int) {
-	m.boxes[hashValue].Remove(lens.Init(label, -1)) // onödigt bör ändra box functionen till att endast ta label
+	m.boxes[hashValue].Remove(lens.Init(label, -1))
 }
 
 func (m *Map) add(lens lens.Lens, hashValue int) {
