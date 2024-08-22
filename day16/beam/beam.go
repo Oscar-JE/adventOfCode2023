@@ -19,6 +19,6 @@ func (b Beam) GetPosition() vec.Vec2d {
 	return b.position
 }
 
-func (b Beam) GetDirectiojn() vec.Vec2d {
+func (b Beam) GetDirection() vec.Vec2d {
 	return b.direction
 }
