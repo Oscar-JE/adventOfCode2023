@@ -13,7 +13,18 @@ func Add(v1 Vec2d, v2 Vec2d) Vec2d {
 	return Vec2d{x: v1.x + v2.x, y: v1.y + v2.y}
 }
 
-func Trun90upp(v1 Vec2d) Vec2d { /// kanske inte kommer behöva denna funktion väntar med att skriva den
-	// se right hand rule
-	return Init(0, 0) // enbart för att kunna köra och skriva våra tester
+func (v Vec2d) GetX() int {
+	return v.x
+}
+
+func (v Vec2d) GetY() int {
+	return v.y
+}
+
+func (v Vec2d) ScalarMultiplication(a int) Vec2d {
+	return Init(a*v.GetX(), a*v.GetY())
+}
+
+func (v Vec2d) Flip() Vec2d {
+	return v.ScalarMultiplication(-1)
 }
