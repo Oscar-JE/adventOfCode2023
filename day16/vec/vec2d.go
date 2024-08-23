@@ -28,3 +28,11 @@ func (v Vec2d) ScalarMultiplication(a int) Vec2d {
 func (v Vec2d) Flip() Vec2d {
 	return v.ScalarMultiplication(-1)
 }
+
+func (v Vec2d) innerProduct(other Vec2d) int {
+	return v.x*other.x + v.y*other.y
+}
+
+func (v Vec2d) Orthogonal(other Vec2d) bool {
+	return v.innerProduct(other) == 0
+}
