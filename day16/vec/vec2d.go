@@ -25,14 +25,18 @@ func (v Vec2d) ScalarMultiplication(a int) Vec2d {
 	return Init(a*v.GetX(), a*v.GetY())
 }
 
+func (v Vec2d) ScalarDevision(a int) Vec2d {
+	return Init(v.GetX()/a, v.GetY()/a)
+}
+
 func (v Vec2d) Flip() Vec2d {
 	return v.ScalarMultiplication(-1)
 }
 
-func (v Vec2d) innerProduct(other Vec2d) int {
+func (v Vec2d) InnerProduct(other Vec2d) int {
 	return v.x*other.x + v.y*other.y
 }
 
 func (v Vec2d) Orthogonal(other Vec2d) bool {
-	return v.innerProduct(other) == 0
+	return v.InnerProduct(other) == 0
 }
