@@ -9,19 +9,55 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
 )
 
 func main() {
+	partTwo()
+}
+
+func partTwo() {
+	mat := parse("long.txt")
+	maximum := 0
+	for i := 0; i < mat.GetRows(); i++ {
+		starterBeam := beam.Init(vec.Init(i, -1), vec.Init(0, 1))
+		res := partOneInternal(mat, starterBeam)
+		if res > maximum {
+			maximum = res
+		}
+	}
+	for i := 0; i < mat.GetRows(); i++ {
+		starterBeam := beam.Init(vec.Init(i, mat.GetCols()), vec.Init(0, -1))
+		res := partOneInternal(mat, starterBeam)
+		if res > maximum {
+			maximum = res
+		}
+	}
+	for j := 0; j < mat.GetCols(); j++ {
+		starterBeam := beam.Init(vec.Init(-1, j), vec.Init(1, 0))
+		res := partOneInternal(mat, starterBeam)
+		if res > maximum {
+			maximum = res
+		}
+	}
+	for j := 0; j < mat.GetCols(); j++ {
+		starterBeam := beam.Init(vec.Init(mat.GetRows(), j), vec.Init(-1, 0))
+		res := partOneInternal(mat, starterBeam)
+		if res > maximum {
+			maximum = res
+		}
+	}
+	fmt.Println(maximum)
+}
+
+func partOne() {
 	mat := parse("long.txt")
 	startBeam := beam.Init(vec.Init(0, -1), vec.Init(0, 1))
-	fmt.Println(mat)
+	fmt.Println(partOneInternal(mat, startBeam))
+}
+
+func partOneInternal(mat matrix.Matrix[mirrors.Reflector], startBeam beam.Beam) int {
 	setting := mirrors.Init(mat, startBeam)
-	start := time.Now()
-	res := setting.NrOfEnergised()
-	t := time.Since(start)
-	fmt.Println(res)
-	fmt.Println(t)
+	return setting.NrOfEnergised()
 }
 
 func parse(file string) matrix.Matrix[mirrors.Reflector] {
