@@ -14,7 +14,7 @@ func (e Empty) Reflect(v vec.Vec2d) []vec.Vec2d {
 	return []vec.Vec2d{v}
 }
 
-func (e Empty) Rep() string {
+func (e Empty) String() string {
 	return "."
 }
 
@@ -31,7 +31,7 @@ func (s Splitter) Reflect(b vec.Vec2d) []vec.Vec2d { // får läsa på om det ä
 	return []vec.Vec2d{b}
 }
 
-func (s Splitter) Rep() string {
+func (s Splitter) String() string {
 	if vec.Init(0, 1) == s.splitDirection {
 		return "-"
 	}
@@ -49,7 +49,7 @@ func (m Mirror) Reflect(v vec.Vec2d) []vec.Vec2d {
 	return []vec.Vec2d{nyRiktning}
 }
 
-func (m Mirror) Rep() string {
+func (m Mirror) String() string {
 	if m.normal == vec.Init(-1, 1) {
 		return "\\"
 	}
@@ -82,6 +82,8 @@ func Init(r rune) mirrors.Reflector {
 		return Mirror{vec.Init(-1, 1)}
 	} else if r == '/' {
 		return Mirror{vec.Init(1, 1)}
+	} else if r == '.' {
+		return Empty{}
 	}
-	return Empty{}
+	panic("Impossible branch")
 }

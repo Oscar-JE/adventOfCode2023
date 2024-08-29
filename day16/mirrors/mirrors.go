@@ -2,6 +2,7 @@ package mirrors
 
 import (
 	"day16/beam"
+	beamcacher "day16/beamcach"
 	"day16/energyreport"
 	"day16/matrix"
 	"day16/vec"
@@ -9,7 +10,7 @@ import (
 
 type Reflector interface {
 	Reflect(vec.Vec2d) []vec.Vec2d
-	Rep() string
+	String() string
 }
 
 type NrEnergized interface {
@@ -21,6 +22,7 @@ type Mirrors struct {
 	mat      matrix.Matrix[Reflector]
 	beams    []beam.Beam
 	reporter NrEnergized
+	cach     beamcacher.BeamCacher
 }
 
 func Init(m matrix.Matrix[Reflector], starterBeam beam.Beam) Mirrors {
@@ -28,7 +30,8 @@ func Init(m matrix.Matrix[Reflector], starterBeam beam.Beam) Mirrors {
 	cols := m.GetCols()
 	reporter := energyreport.Init(rows, cols) // kommer denna bli gb:ad ??
 	beams := []beam.Beam{starterBeam}
-	return Mirrors{mat: m, beams: beams, reporter: &reporter}
+	cach := beamcacher.Init(rows, cols)
+	return Mirrors{mat: m, beams: beams, reporter: &reporter, cach: cach}
 }
 
 func (m *Mirrors) NextState() {
@@ -47,6 +50,7 @@ func (m *Mirrors) moveBeams() { // denna fungerar inte som jag förväntade
 func (m *Mirrors) reportBeams() {
 	for _, beam := range m.beams {
 		m.reporter.ReportPosition(beam.GetPosition())
+		m.cach.See(beam)
 	}
 }
 
@@ -54,7 +58,7 @@ func (m *Mirrors) removeBeamsOutOfBound() {
 	beamsInside := []beam.Beam{}
 	for _, beam := range m.beams {
 		position := beam.GetPosition()
-		if m.mat.Inside(position.GetX(), position.GetY()) {
+		if m.mat.Inside(position.GetX(), position.GetY()) && (!m.cach.HasSeen(beam)) {
 			beamsInside = append(beamsInside, beam)
 		}
 	}
@@ -82,6 +86,9 @@ func (m Mirrors) reflect(b beam.Beam) []beam.Beam {
 func (m Mirrors) NrOfEnergised() int {
 	for i := 0; i < m.mat.GetRows()*m.mat.GetCols(); i++ {
 		m.NextState()
+		if len(m.beams) == 0 {
+			break
+		}
 	}
 	return m.reporter.TotalNrEnergized()
 }

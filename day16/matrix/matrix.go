@@ -1,12 +1,14 @@
 package matrix
 
-type Matrix[T any] struct {
+import "fmt"
+
+type Matrix[T fmt.Stringer] struct {
 	data []T
 	rows int
 	cols int
 }
 
-func Init[T any](data []T, rows int, cols int) Matrix[T] {
+func Init[T fmt.Stringer](data []T, rows int, cols int) Matrix[T] {
 	return Matrix[T]{data: data, rows: rows, cols: cols}
 }
 
@@ -22,7 +24,7 @@ func (m Matrix[T]) GetCols() int {
 	return m.cols
 }
 
-func (m Matrix[T]) index(row int, col int) int { // oops
+func (m Matrix[T]) index(row int, col int) int {
 	return m.cols*row + col
 }
 
@@ -36,4 +38,16 @@ func (m Matrix[T]) Inside(row int, col int) bool {
 
 func (m Matrix[T]) GetData() []T {
 	return m.data
+}
+
+func (m Matrix[T]) String() string {
+	representation := ""
+	for row := 0; row < m.rows; row++ {
+		rowRep := ""
+		for col := 0; col < m.cols; col++ {
+			rowRep += m.Get(row, col).String()
+		}
+		representation += rowRep + "\r\n"
+	}
+	return representation
 }

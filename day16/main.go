@@ -9,14 +9,19 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
-	mat := parse("short.txt")
+	mat := parse("long.txt")
 	startBeam := beam.Init(vec.Init(0, -1), vec.Init(0, 1))
-	fmt.Println(mat.Get(7, 1).Rep())
+	fmt.Println(mat)
 	setting := mirrors.Init(mat, startBeam)
-	fmt.Println(setting.NrOfEnergised())
+	start := time.Now()
+	res := setting.NrOfEnergised()
+	t := time.Since(start)
+	fmt.Println(res)
+	fmt.Println(t)
 }
 
 func parse(file string) matrix.Matrix[mirrors.Reflector] {
@@ -32,7 +37,8 @@ func parse(file string) matrix.Matrix[mirrors.Reflector] {
 	}
 	cols := len([]rune(lines[0]))
 	reflectors := []mirrors.Reflector{}
-	for _, r := range content {
+	contentNoLines := strings.Replace(content, "\r\n", "", -1)
+	for _, r := range contentNoLines {
 		reflectors = append(reflectors, mirror.Init(r))
 	}
 	return matrix.Init(reflectors, rows, cols)
