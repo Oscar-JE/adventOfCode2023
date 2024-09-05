@@ -37,3 +37,4 @@ func (s State) NextPossibleStates() []State {
 }
 
 // kan invertera denna funktion också för att köra uträkningen snabbare
+// men det borde inte behövas för att köra en weighted dixtras
