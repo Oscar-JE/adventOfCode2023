@@ -28,46 +28,42 @@ func (p PriorityQueue[T]) findInsertionIndex(prio int) int {
 	for _, elem := range p.elements {
 		priorities = append(priorities, elem.priority)
 	}
-	return findIndexInSortedList2(priorities, prio)
+	return findIndexInSortedList(priorities, prio)
 }
 
 func findIndexInSortedList(list []int, v int) int {
-	if len(list) == 0 || len(list) == 1 || v < list[0] {
+	if len(list) == 0 {
 		return 0
 	}
-	for i := 0; i < len(list)-2; i++ {
-		if list[i] <= v && v <= list[i+1] {
-			return i
-		}
+	gapIndex := findNearestGap(list, v)
+	indexCandidate := gapIndex + 1
+	if indexCandidate == 1 && v < list[0] {
+		return 0
 	}
-	if v > list[len(list)-1] {
+	if indexCandidate == len(list)-1 && v > list[len(list)-1] {
 		return len(list)
-	} else {
-		return len(list) - 1
 	}
+	return indexCandidate
 }
 
-func findIndexInSortedList2(list []int, v int) int {
-	return findIndexInSortedListInternal(list, v, 0, len(list)-1)
-}
-
-func findIndexInSortedListInternal(list []int, v int, startIndex int, slutIndex int) int {
-	if startIndex == slutIndex {
-		if len(list) > 0 {
-			if v < list[startIndex] {
-				return startIndex
-			} else {
-				return startIndex + 1
-			}
+func findNearestGap(list []int, v int) int {
+	nrOfGaps := len(list) - 1
+	if nrOfGaps <= 0 {
+		return 0
+	}
+	minIndex := 0            // firstGapIndex
+	maxIndex := nrOfGaps - 1 // lastGapIndex
+	for minIndex < maxIndex {
+		midIndex := (minIndex + maxIndex) / 2
+		if list[midIndex] <= v && v <= list[midIndex] {
+			return midIndex
 		}
-		return startIndex
+		if v < list[midIndex] {
+			maxIndex = midIndex - 1
+		}
+		if list[midIndex+1] < v {
+			minIndex = midIndex + 1
+		}
 	}
-	midIndex := (startIndex + slutIndex) / 2
-	if list[midIndex] <= v && v <= list[midIndex+1] {
-		return midIndex
-	}
-	if v < list[midIndex] {
-		return findIndexInSortedListInternal(list, v, startIndex, midIndex)
-	}
-	return findIndexInSortedListInternal(list, v, midIndex+1, slutIndex)
+	return minIndex
 }
