@@ -1,6 +1,10 @@
 package environment
 
-import "day16/vec"
+import (
+	"day16/vec"
+)
+
+const maxStepInline int = 3
 
 type State struct {
 	position  vec.Vec2d
@@ -20,7 +24,7 @@ func (s State) NextPossibleStates() []State {
 			continue
 		}
 		if loopNext.direction == dir {
-			if loopNext.stepsTake != 2 {
+			if loopNext.stepsTake != maxStepInline-1 {
 				loopNext.stepsTake++
 			} else {
 				continue
@@ -36,5 +40,10 @@ func (s State) NextPossibleStates() []State {
 	return possibleNext
 }
 
-// kan invertera denna funktion också för att köra uträkningen snabbare
-// men det borde inte behövas för att köra en weighted dixtras
+func (s State) hashCode(rows int) int {
+	positionHash := s.position.GetX()*rows + s.position.GetY()
+	directionHash := directionHash(s.direction)
+	stepsInLineHash := s.stepsTake
+	hash := positionHash*(len(directions)*maxStepInline) + directionHash*maxStepInline + stepsInLineHash
+	return hash
+}

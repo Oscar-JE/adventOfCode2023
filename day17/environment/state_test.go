@@ -20,7 +20,7 @@ func TestNextStatesStepsNotLimiting(t *testing.T) {
 }
 
 func TestNextStatesStepsLimitingFactor(t *testing.T) {
-	start := Init(vec.Init(0, 0), north, 2) // detta bör vara rätt
+	start := Init(vec.Init(0, 0), north, 2)
 	nextStates := start.NextPossibleStates()
 	if len(nextStates) != 2 {
 		t.Errorf("length of next steps should be 2 ")

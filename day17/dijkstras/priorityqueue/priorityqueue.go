@@ -17,6 +17,17 @@ func InitWithValues[T any](elements []element[T]) PriorityQueue[T] {
 	return PriorityQueue[T]{elements: elements}
 }
 
+func (p PriorityQueue[T]) HasElement() bool {
+	return len(p.elements) > 0
+}
+
+func (p *PriorityQueue[T]) Pop() (T, int) {
+	// poppa från listan dela upp i interna grejer och returnera
+	popped := p.elements[0]
+	p.elements = p.elements[1:]
+	return popped.state, popped.priority
+}
+
 func (p *PriorityQueue[T]) Add(s T, prio int) {
 	insertIndex := p.findInsertionIndex(prio)
 	tail := append([]element[T]{{state: s, priority: prio}}, p.elements[insertIndex:]...)

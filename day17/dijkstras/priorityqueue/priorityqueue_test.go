@@ -2,6 +2,20 @@ package priorityqueue
 
 import "testing"
 
+func TestPop(t *testing.T) {
+	pQ := InitWithValues([]element[int]{element[int]{1, 1}, element[int]{1, 1}})
+	val, prio := pQ.Pop()
+	if val != 1 {
+		t.Errorf("wrong value in popped element")
+	}
+	if prio != 1 {
+		t.Errorf("wrong prie of popped element")
+	}
+	if len(pQ.elements) != 1 {
+		t.Errorf("wrong number of remaining elements after pop")
+	}
+}
+
 func TestFindIndexEmpty(t *testing.T) {
 	sorted := []int{}
 	value := 2
