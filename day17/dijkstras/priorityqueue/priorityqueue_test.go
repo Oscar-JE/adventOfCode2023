@@ -72,7 +72,7 @@ func TestFindINdexOddSameValues(t *testing.T) {
 	list := []int{8, 8, 8}
 	value := 10
 	expected := 3
-	res := findIndexInSortedList2(list, value)
+	res := findIndexInSortedList(list, value)
 	if res != expected {
 		t.Errorf("res was %d but should bee %d", res, expected)
 	}
@@ -82,7 +82,27 @@ func TestFindINdexOddSameValues6(t *testing.T) {
 	list := []int{7, 10}
 	value := 8
 	expected := 1
-	res := findIndexInSortedList2(list, value)
+	res := findIndexInSortedList(list, value)
+	if res != expected {
+		t.Errorf("res was %d but should bee %d", res, expected)
+	}
+}
+
+func TestFindNearestGap(t *testing.T) {
+	list := []int{7, 10}
+	value := 8
+	expected := 0
+	res := findNearestGap(list, value)
+	if res != expected {
+		t.Errorf("res was %d but should bee %d", res, expected)
+	}
+}
+
+func TestFindNearestGapLonger(t *testing.T) {
+	list := []int{7, 7, 10}
+	value := 8
+	expected := 1
+	res := findNearestGap(list, value)
 	if res != expected {
 		t.Errorf("res was %d but should bee %d", res, expected)
 	}
