@@ -1,6 +1,6 @@
 package priorityqueue
 
-type element[T any] struct {
+type element[T any] struct { // nu rör vi oss äntligen bort från any. Det måste kunna göra en eq
 	state    T
 	priority int
 }
@@ -26,6 +26,10 @@ func (p *PriorityQueue[T]) Pop() (T, int) {
 	popped := p.elements[0]
 	p.elements = p.elements[1:]
 	return popped.state, popped.priority
+}
+
+func (p *PriorityQueue[T]) Update(s T, prio int) {
+	// skriver ett test så att vi vet att denna ska skrivas
 }
 
 func (p *PriorityQueue[T]) Add(s T, prio int) {
@@ -77,4 +81,16 @@ func findNearestGap(list []int, v int) int {
 		}
 	}
 	return minIndex
+}
+
+func (p PriorityQueue[T]) Eq(other PriorityQueue[T]) bool {
+	if len(p.elements) != len(other.elements) {
+		return false
+	}
+	same := true
+	for i := range p.elements {
+		pE := p.elements[i]
+		oE := other.elements[i]
+		same = same && pE == oE
+	}
 }

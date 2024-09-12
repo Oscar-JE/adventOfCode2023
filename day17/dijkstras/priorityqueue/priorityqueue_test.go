@@ -2,6 +2,15 @@ package priorityqueue
 
 import "testing"
 
+func TestUpdate(t *testing.T) {
+	pQ := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 4}})
+	pQ.Update(3, 5)
+	expected := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 4}, element[int]{3, 5}})
+	if !pQ.Eq(expected) {
+		t.Errorf("update with no crash is faulty")
+	}
+}
+
 func TestPop(t *testing.T) {
 	pQ := InitWithValues([]element[int]{element[int]{1, 1}, element[int]{1, 1}})
 	val, prio := pQ.Pop()
