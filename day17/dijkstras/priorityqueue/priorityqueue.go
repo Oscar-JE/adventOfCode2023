@@ -1,19 +1,19 @@
 package priorityqueue
 
-type element[T any] struct { // nu rör vi oss äntligen bort från any. Det måste kunna göra en eq
+type element[T comparable] struct { // nu rör vi oss äntligen bort från any. Det måste kunna göra en eq
 	state    T
 	priority int
 }
 
-type PriorityQueue[T any] struct {
+type PriorityQueue[T comparable] struct {
 	elements []element[T]
 }
 
-func Init[T any]() PriorityQueue[T] {
+func Init[T comparable]() PriorityQueue[T] {
 	return PriorityQueue[T]{}
 }
 
-func InitWithValues[T any](elements []element[T]) PriorityQueue[T] {
+func InitWithValues[T comparable](elements []element[T]) PriorityQueue[T] {
 	return PriorityQueue[T]{elements: elements}
 }
 
@@ -93,4 +93,5 @@ func (p PriorityQueue[T]) Eq(other PriorityQueue[T]) bool {
 		oE := other.elements[i]
 		same = same && pE == oE
 	}
+	return same
 }
