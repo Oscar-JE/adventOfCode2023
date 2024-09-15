@@ -29,7 +29,21 @@ func (p *PriorityQueue[T]) Pop() (T, int) {
 }
 
 func (p *PriorityQueue[T]) Update(s T, prio int) {
-	// skriver ett test så att vi vet att denna ska skrivas
+	hasIt, index := p.has(s)
+	if hasIt {
+		p.elements[index].priority = prio
+	} else {
+		p.Add(s, prio)
+	}
+}
+
+func (p PriorityQueue[T]) has(s T) (bool, int) {
+	for index, el := range p.elements { // går inte att göra bättre då listan är sorterad på prioritet och inte någon ordning i state
+		if el.state == s {
+			return true, index
+		}
+	}
+	return false, -1
 }
 
 func (p *PriorityQueue[T]) Add(s T, prio int) {
@@ -66,8 +80,8 @@ func findNearestGap(list []int, v int) int {
 	if nrOfGaps <= 0 {
 		return 0
 	}
-	minIndex := 0            // firstGapIndex
-	maxIndex := nrOfGaps - 1 // lastGapIndex
+	minIndex := 0
+	maxIndex := nrOfGaps - 1
 	for minIndex < maxIndex {
 		midIndex := (minIndex + maxIndex) / 2
 		if list[midIndex] <= v && v <= list[midIndex] {

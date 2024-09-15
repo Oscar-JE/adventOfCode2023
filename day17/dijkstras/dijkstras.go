@@ -2,39 +2,35 @@ package dijkstras
 
 import "day17/dijkstras/priorityqueue"
 
-// borde inte vara any
-type Environment[E any] interface {
+// borde inte vara comparable
+type Environment[E comparable] interface {
 	TransFer(state E) []StateAndCost[E]
 }
 
-type StateAndCost[E any] interface {
+type StateAndCost[E comparable] interface {
 	GetState() E
 	GetCost() int
 }
 
-type StateCach[E any] interface {
+type StateCach[E comparable] interface {
 	SetValue(state E, pathCost int)
 	GetValue(state E) int
 	Has(state E) bool
 }
 
-type Dijkstras[E any] struct {
+type Dijkstras[E comparable] struct {
 	cach    StateCach[E]
 	env     Environment[E]
 	visited priorityqueue.PriorityQueue[E]
 }
 
-func Init[E any](env Environment[E], cach StateCach[E]) Dijkstras[E] {
+func Init[E comparable](env Environment[E], cach StateCach[E]) Dijkstras[E] {
 	visited := priorityqueue.Init[E]()
 	return Dijkstras[E]{cach: cach, env: env, visited: visited}
 }
 
 func (d *Dijkstras[E]) findPaths(startState E, startCost int) {
-	d.cach.SetValue(startState, startCost)
-	nextStates := d.env.TransFer(startState)
-	for _, stateAndCost := range nextStates {
-		d.visited.Add(stateAndCost.GetState(), stateAndCost.GetCost())
-	}
+	d.visited.Add(startState, startCost)
 	for d.visited.HasElement() {
 		state, trueDist := d.visited.Pop()
 		d.cach.SetValue(state, trueDist)
@@ -46,4 +42,19 @@ func (d *Dijkstras[E]) findPaths(startState E, startCost int) {
 			d.visited.Update(stateAndCost.GetState(), stateAndCost.GetCost())
 		}
 	}
+}
+
+func (d Dijkstras[E]) SmallestDist(endStates []E, startState E, startCost int) int {
+	d.findPaths(startState, startCost)
+	if len(endStates) == 0 {
+		return 0
+	}
+	min := d.cach.GetValue(endStates[0])
+	for i := 1; i < len(endStates); i++ {
+		cached := d.cach.GetValue(endStates[i])
+		if cached < min {
+			min = cached
+		}
+	}
+	return min
 }

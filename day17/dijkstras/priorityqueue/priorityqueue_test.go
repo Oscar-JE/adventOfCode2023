@@ -2,12 +2,21 @@ package priorityqueue
 
 import "testing"
 
-func TestUpdate(t *testing.T) {
+func TestUpdateWithMatch(t *testing.T) {
 	pQ := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 4}})
 	pQ.Update(3, 5)
-	expected := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 4}, element[int]{3, 5}})
+	expected := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 5}})
 	if !pQ.Eq(expected) {
-		t.Errorf("update with no crash is faulty")
+		t.Errorf("update with match is faulty")
+	}
+}
+
+func TestUpdateWithNoMatch(t *testing.T) {
+	pQ := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 4}})
+	pQ.Update(10, 3)
+	expected := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{10, 3}, element[int]{3, 4}})
+	if !pQ.Eq(expected) {
+		t.Errorf("update with no match is faulty")
 	}
 }
 
