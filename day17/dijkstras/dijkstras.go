@@ -7,9 +7,17 @@ type Environment[E comparable] interface {
 	TransFer(state E) []StateAndCost[E]
 }
 
-type StateAndCost[E comparable] interface {
-	GetState() E
-	GetCost() int
+type StateAndCost[E comparable] struct {
+	state E
+	cost  int
+}
+
+func (s StateAndCost[E]) GetState() E {
+	return s.state
+}
+
+func (s StateAndCost[E]) GetCost() int {
+	return s.cost
 }
 
 type StateCach[E comparable] interface {
