@@ -47,7 +47,8 @@ func (d *Dijkstras[E]) findPaths(startState E, startCost int) {
 			if d.cach.Has(stateAndCost.GetState()) {
 				continue
 			}
-			d.visited.Update(stateAndCost.GetState(), stateAndCost.GetCost())
+			costCandidate := trueDist + stateAndCost.cost
+			d.visited.Update(stateAndCost.GetState(), costCandidate)
 		}
 	}
 }

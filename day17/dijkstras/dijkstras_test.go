@@ -61,13 +61,16 @@ func (t *TestCach[E]) GetValue(s E) int {
 }
 
 func TestDijkstras(t *testing.T) {
-	env := testEnvironment{[][]int{[]int{-1, 5, 1, -1}, []int{-1, -1, -1, 1}, []int{-1, 2, -1, 7}, []int{-1, -1, -1, -1}}}
+	env := testEnvironment{[][]int{
+		[]int{-1, 5, 1, -1},
+		[]int{-1, -1, -1, 1},
+		[]int{-1, 2, -1, 7},
+		[]int{-1, -1, -1, -1}}}
 	startState := testState{0}
 	cach := &TestCach[testState]{[]StateAndCost[testState]{}}
 	dij := Init[testState](env, cach)
-	dij.findPaths(startState, 0)
-	dists := dij.SmallestDist([]testState{testState{4}}, startState, 0)
+	dists := dij.SmallestDist([]testState{testState{3}}, startState, 0)
 	if dists != 4 {
-		t.Errorf("distance for test environment should be 4")
+		t.Errorf("distance for test environment should be 4, but was %d", dists)
 	}
 }
