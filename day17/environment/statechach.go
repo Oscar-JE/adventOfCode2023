@@ -16,11 +16,15 @@ func InitStateCach(rows int, cols int) StateCache {
 	return StateCache{statePaths: cachedValues, rows: rows}
 }
 
-func (c *StateCache) Set(s State, pathV int) {
+func (c *StateCache) SetValue(s State, pathV int) {
 	index := s.hashCode(c.rows)
 	c.statePaths[index] = pathV
 }
 
-func (c StateCache) Get(s State) int {
+func (c StateCache) GetValue(s State) int {
 	return c.statePaths[s.hashCode(c.rows)]
+}
+
+func (c StateCache) Has(s State) bool {
+	return c.GetValue(s) < math.MaxInt
 }

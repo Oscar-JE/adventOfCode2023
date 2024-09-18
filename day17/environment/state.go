@@ -47,3 +47,17 @@ func (s State) hashCode(rows int) int {
 	hash := positionHash*(len(directions)*maxStepInline) + directionHash*maxStepInline + stepsInLineHash
 	return hash
 }
+
+func WinnigStates(end vec.Vec2d) []State {
+	ret := []State{}
+	for step := range 3 {
+		for _, dir := range directions {
+			ret = append(ret, State{stepsTake: step, position: end, direction: dir})
+		}
+	}
+	return ret
+}
+
+func StartState() State {
+	return State{stepsTake: 0, position: vec.Init(0, 0), direction: east}
+}

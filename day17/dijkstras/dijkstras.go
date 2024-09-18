@@ -12,6 +12,10 @@ type StateAndCost[E comparable] struct {
 	cost  int
 }
 
+func InitStateAndCost[E comparable](state E, cost int) StateAndCost[E] {
+	return StateAndCost[E]{state: state, cost: cost}
+}
+
 func (s StateAndCost[E]) GetState() E {
 	return s.state
 }
@@ -53,14 +57,14 @@ func (d *Dijkstras[E]) findPaths(startState E, startCost int) {
 	}
 }
 
-func (d Dijkstras[E]) SmallestDist(endStates []E, startState E, startCost int) int {
-	d.findPaths(startState, startCost)
+func (this Dijkstras[E]) SmallestDist(endStates []E, startState E, startCost int) int {
+	this.findPaths(startState, startCost)
 	if len(endStates) == 0 {
 		return 0
 	}
-	min := d.cach.GetValue(endStates[0])
+	min := this.cach.GetValue(endStates[0])
 	for i := 1; i < len(endStates); i++ {
-		cached := d.cach.GetValue(endStates[i])
+		cached := this.cach.GetValue(endStates[i])
 		if cached < min {
 			min = cached
 		}
