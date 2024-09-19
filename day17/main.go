@@ -11,6 +11,10 @@ import (
 )
 
 func main() {
+	fmt.Println(part1())
+}
+
+func part1() int {
 	file, err := os.ReadFile("short.txt")
 	if err != nil {
 		panic("input file was not found or was corrupted")
@@ -33,5 +37,5 @@ func main() {
 	dijk := dijkstras.Init[environment.State](env, &cash)
 	winningStates := environment.WinnigStates(vec.Init(rows-1, cols-1))
 	startState := environment.StartState()
-	fmt.Println(dijk.SmallestDist(winningStates, startState, 0))
+	return dijk.SmallestDist(winningStates, startState, 0)
 }

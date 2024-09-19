@@ -60,6 +60,10 @@ func (t *TestCach[E]) GetValue(s E) int {
 	return 100
 }
 
+func (t TestCach[E]) ProcentageFilled() float64 {
+	return 0
+}
+
 func TestDijkstras(t *testing.T) {
 	env := testEnvironment{[][]int{
 		[]int{-1, 5, 1, -1},

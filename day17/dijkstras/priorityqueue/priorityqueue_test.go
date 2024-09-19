@@ -2,12 +2,30 @@ package priorityqueue
 
 import "testing"
 
-func TestUpdateWithMatch(t *testing.T) {
+func TestUpdateWithMatchNoOrderChange(t *testing.T) {
 	pQ := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 4}})
-	pQ.Update(3, 5)
-	expected := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 5}})
+	pQ.Update(3, 3)
+	expected := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 3}})
 	if !pQ.Eq(expected) {
 		t.Errorf("update with match is faulty")
+	}
+}
+
+func TestUpdateWithMatchAndOrderChange(t *testing.T) {
+	pQ := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 4}})
+	pQ.Update(3, 0)
+	expected := InitWithValues([]element[int]{element[int]{3, 0}, element[int]{1, 2}})
+	if !pQ.Eq(expected) {
+		t.Errorf("update with match and different order behaives weird")
+	}
+}
+
+func TestUpdateMatchOnFirst(t *testing.T) {
+	pQ := InitWithValues([]element[int]{element[int]{1, 2}, element[int]{3, 4}})
+	pQ.Update(1, 0)
+	expected := InitWithValues([]element[int]{element[int]{1, 0}, element[int]{3, 4}})
+	if !pQ.Eq(expected) {
+		t.Errorf("update with match and different order behaives weird")
 	}
 }
 
@@ -123,5 +141,14 @@ func TestFindNearestGapLonger(t *testing.T) {
 	res := findNearestGap(list, value)
 	if res != expected {
 		t.Errorf("res was %d but should bee %d", res, expected)
+	}
+}
+
+func TestPreviouslyStoppingCase(t *testing.T) {
+	list := []int{6, 6, 6, 7, 9}
+	val := 7
+	res := findNearestGap(list, val)
+	if !(res == 2 || res == 3) {
+		t.Errorf("alarm ")
 	}
 }

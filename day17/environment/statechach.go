@@ -28,3 +28,13 @@ func (c StateCache) GetValue(s State) int {
 func (c StateCache) Has(s State) bool {
 	return c.GetValue(s) < math.MaxInt
 }
+
+func (c StateCache) ProcentageFilled() float64 {
+	numberOfChached := 0
+	for _, cost := range c.statePaths {
+		if cost < math.MaxInt {
+			numberOfChached++
+		}
+	}
+	return float64(numberOfChached) / float64(len(c.statePaths))
+}
