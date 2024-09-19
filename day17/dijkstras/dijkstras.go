@@ -2,7 +2,6 @@ package dijkstras
 
 import (
 	"day17/dijkstras/priorityqueue"
-	"fmt"
 )
 
 // borde inte vara comparable
@@ -31,7 +30,6 @@ type StateCach[E comparable] interface {
 	SetValue(state E, pathCost int)
 	GetValue(state E) int
 	Has(state E) bool
-	ProcentageFilled() float64
 }
 
 type Dijkstras[E comparable] struct {
@@ -47,12 +45,7 @@ func Init[E comparable](env Environment[E], cach StateCach[E]) Dijkstras[E] {
 
 func (d *Dijkstras[E]) findPaths(startState E, startCost int) {
 	d.visited.Add(startState, startCost)
-	iterNumber := 0
 	for d.visited.HasElement() {
-		iterNumber++
-		if iterNumber%10 == 0 {
-			fmt.Println(d.cach.ProcentageFilled())
-		}
 		state, trueDist := d.visited.Pop()
 		d.cach.SetValue(state, trueDist)
 		nextGenStateAndCost := d.env.TransFer(state)
