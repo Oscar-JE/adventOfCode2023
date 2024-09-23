@@ -15,7 +15,7 @@ func main() {
 }
 
 func part1() int {
-	file, err := os.ReadFile("big.txt")
+	file, err := os.ReadFile("small.txt")
 	if err != nil {
 		panic("input file was not found or was corrupted")
 	}

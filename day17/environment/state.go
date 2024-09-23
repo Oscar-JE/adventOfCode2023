@@ -10,13 +10,17 @@ type State struct {
 	position  vec.Vec2d
 	direction vec.Vec2d
 	stepsTake int
+	poll      policy
 }
 
-func Init(position vec.Vec2d, direction vec.Vec2d, stepsTaken int) State {
-	return State{position: position, direction: direction, stepsTake: stepsTaken}
+type policy interface {
+	NextPossibleStates(State) []State
 }
 
-func (s State) NextPossibleStates() []State {
+type policy1 struct {
+}
+
+func (p policy1) NextPossibleStates(s State) []State {
 	possibleNext := []State{}
 	for _, dir := range directions {
 		loopNext := s
@@ -38,6 +42,14 @@ func (s State) NextPossibleStates() []State {
 		possibleNext = append(possibleNext, loopNext)
 	}
 	return possibleNext
+}
+
+func Init(position vec.Vec2d, direction vec.Vec2d, stepsTaken int) State {
+	return State{position: position, direction: direction, stepsTake: stepsTaken, poll: policy1{}}
+}
+
+func (s State) NextPossibleStates() []State {
+	return s.poll.NextPossibleStates(s)
 }
 
 func (s State) hashCode(rows int) int {
