@@ -7,8 +7,8 @@ type StateCache struct { //testar debba om det krisar
 	rows       int
 }
 
-func InitStateCach(rows int, cols int) StateCache {
-	maxHash := rows * cols * len(directions) * maxStepInline
+func InitStateCach(state State, rows int, cols int) StateCache {
+	maxHash := state.MaxHash(rows, cols)
 	cachedValues := []int{}
 	for range maxHash {
 		cachedValues = append(cachedValues, math.MaxInt)

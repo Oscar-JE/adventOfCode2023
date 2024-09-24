@@ -11,11 +11,29 @@ import (
 )
 
 func main() {
-	fmt.Println(part1())
+	fmt.Println(part2())
 }
 
 func part1() int {
-	file, err := os.ReadFile("small.txt")
+	env, rows, cols := parseEnv("small.txt")
+	startState := environment.StartState()
+	cash := environment.InitStateCach(startState, rows, cols)
+	dijk := dijkstras.Init[environment.State](env, &cash)
+	winningStates := environment.WinningStates(vec.Init(rows-1, cols-1))
+	return dijk.SmallestDist(winningStates, startState, 0)
+}
+
+func part2() int {
+	env, rows, cols := parseEnv("simpler.txt")
+	startState := environment.StartState2()
+	cash := environment.InitStateCach(startState, rows, cols)
+	dijk := dijkstras.Init[environment.State](env, &cash)
+	winningStates := environment.WinningStates2(vec.Init(rows-1, cols-1))
+	return dijk.SmallestDist(winningStates, startState, 0)
+}
+
+func parseEnv(filename string) (environment.Environment, int, int) {
+	file, err := os.ReadFile(filename)
 	if err != nil {
 		panic("input file was not found or was corrupted")
 	}
@@ -33,9 +51,5 @@ func part1() int {
 		data = append(data, value)
 	}
 	env := environment.InitEnv(data, rows, cols)
-	cash := environment.InitStateCach(rows, cols)
-	dijk := dijkstras.Init[environment.State](env, &cash)
-	winningStates := environment.WinnigStates(vec.Init(rows-1, cols-1))
-	startState := environment.StartState()
-	return dijk.SmallestDist(winningStates, startState, 0)
+	return env, rows, cols
 }
