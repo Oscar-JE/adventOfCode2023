@@ -17,7 +17,7 @@ func main() {
 func part1() int {
 	env, rows, cols := parseEnv("small.txt")
 	startState := environment.StartState()
-	cash := environment.InitStateCach(startState, rows, cols)
+	cash := environment.InitSimpleCach()
 	dijk := dijkstras.Init[environment.State](env, &cash)
 	winningStates := environment.WinningStates(vec.Init(rows-1, cols-1))
 	return dijk.SmallestDist(winningStates, startState, 0)
@@ -26,7 +26,7 @@ func part1() int {
 func part2() int {
 	env, rows, cols := parseEnv("simpler.txt")
 	startState := environment.StartState2()
-	cash := environment.InitStateCach(startState, rows, cols)
+	cash := environment.InitSimpleCach()
 	dijk := dijkstras.Init[environment.State](env, &cash)
 	winningStates := environment.WinningStates2(vec.Init(rows-1, cols-1))
 	return dijk.SmallestDist(winningStates, startState, 0)
