@@ -14,3 +14,19 @@ func TestNexStates(t *testing.T) {
 		t.Errorf("unexpected state in TestNextStates")
 	}
 }
+
+func TestPoll2NextToWall(t *testing.T) {
+	data := []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1,
+		9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1,
+		9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1,
+		9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1}
+	rows := 5
+	cols := 12
+	env := InitEnv(data, rows, cols)
+	s := Init2(vec.Init(4, 8), south, 3)
+	nextStates := env.NextStates(s)
+	if !(len(nextStates) > 1) {
+		t.Errorf("Unexpected Stop")
+	}
+}

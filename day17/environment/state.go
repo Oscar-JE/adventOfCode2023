@@ -7,7 +7,7 @@ import (
 const maxStepInLinePart1 int = 3
 const minStepInLinePart1 int = 0
 
-const maxStepInLinePart2 int = 10 // detta förstö cachen jag skrivit
+const maxStepInLinePart2 int = 10
 const minStepInLinePart2 int = 4
 
 type State struct {
@@ -19,7 +19,7 @@ type State struct {
 
 type policy interface {
 	NextPossibleStates(State) []State
-	maxNrSteps() int
+	maxNrSteps() int // har denna gått sönder helt och fullt?
 }
 
 type policy1 struct {
@@ -46,7 +46,7 @@ func (p policy2) NextPossibleStates(s State) []State {
 
 func NextStatesWithLimits(s State, lowerStepLimit int, upperStepLimit int) []State {
 	possibleNext := []State{}
-	if s.stepsTake < lowerStepLimit {
+	if s.stepsTake < lowerStepLimit-1 {
 		nextState := s
 		nextState.position = vec.Add(nextState.position, nextState.direction)
 		nextState.stepsTake++

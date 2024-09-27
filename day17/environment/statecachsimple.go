@@ -1,6 +1,7 @@
 package environment
 
 import (
+	"day16/vec"
 	"day17/dijkstras"
 	"math"
 )
@@ -42,4 +43,23 @@ func (c SimpleCach) GetValue(s State) int {
 
 func (c SimpleCach) ProcentageFilled() float64 {
 	return 0.0
+}
+
+func (c SimpleCach) FindLowestWithPosition(position vec.Vec2d) int {
+	allMatchedValues := []int{}
+	for _, el := range c.l {
+		if el.GetState().position == position {
+			allMatchedValues = append(allMatchedValues, el.GetCost())
+		}
+	}
+	if len(allMatchedValues) == 0 {
+		return 1000
+	}
+	minimum := allMatchedValues[0]
+	for i := 1; i < len(allMatchedValues); i++ {
+		if minimum > allMatchedValues[i] {
+			minimum = allMatchedValues[i]
+		}
+	}
+	return minimum
 }

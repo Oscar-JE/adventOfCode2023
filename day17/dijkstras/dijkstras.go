@@ -43,11 +43,15 @@ func Init[E comparable](env Environment[E], cach StateCach[E]) Dijkstras[E] {
 	return Dijkstras[E]{cach: cach, env: env, visited: visited}
 }
 
-func (d *Dijkstras[E]) findPaths(startState E, startCost int) {
-	d.visited.Add(startState, startCost)
+func (d Dijkstras[E]) GetCach() StateCach[E] {
+	return d.cach
+}
+
+func (d *Dijkstras[E]) FindPaths(startState E, startCost int) {
+	d.visited.Add(startState, startCost) // hur gör man för att kunna debugga med path
 	for d.visited.HasElement() {
-		state, trueDist := d.visited.Pop()
-		d.cach.SetValue(state, trueDist)
+		state, trueDist := d.visited.Pop() // om detta är en path iställer för ett state kanske
+		d.cach.SetValue(state, trueDist)   // måste finnas en koppling
 		nextGenStateAndCost := d.env.TransFer(state)
 		for _, stateAndCost := range nextGenStateAndCost {
 			if d.cach.Has(stateAndCost.GetState()) {
@@ -60,7 +64,7 @@ func (d *Dijkstras[E]) findPaths(startState E, startCost int) {
 }
 
 func (this Dijkstras[E]) SmallestDist(endStates []E, startState E, startCost int) int {
-	this.findPaths(startState, startCost)
+	this.FindPaths(startState, startCost)
 	if len(endStates) == 0 {
 		return 0
 	}
@@ -73,3 +77,5 @@ func (this Dijkstras[E]) SmallestDist(endStates []E, startState E, startCost int
 	}
 	return min
 }
+
+// låt oss börja med den enklaste visualizeringen

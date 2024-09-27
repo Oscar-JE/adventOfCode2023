@@ -114,3 +114,7 @@ func (p PriorityQueue[T]) Eq(other PriorityQueue[T]) bool {
 	}
 	return same
 }
+
+func (p PriorityQueue[T]) String() string {
+	return "annan rep"
+}
