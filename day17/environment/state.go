@@ -46,7 +46,7 @@ func (p policy2) NextPossibleStates(s State) []State {
 
 func NextStatesWithLimits(s State, lowerStepLimit int, upperStepLimit int) []State {
 	possibleNext := []State{}
-	if s.stepsTake < lowerStepLimit-1 {
+	if s.stepsTake < lowerStepLimit {
 		nextState := s
 		nextState.position = vec.Add(nextState.position, nextState.direction)
 		nextState.stepsTake++
@@ -59,14 +59,14 @@ func NextStatesWithLimits(s State, lowerStepLimit int, upperStepLimit int) []Sta
 			continue
 		}
 		if loopNext.direction == dir {
-			if loopNext.stepsTake != upperStepLimit-1 {
+			if loopNext.stepsTake != upperStepLimit {
 				loopNext.stepsTake++
 			} else {
 				continue
 			}
 
 		} else if loopNext.direction != dir {
-			loopNext.stepsTake = 0
+			loopNext.stepsTake = 1
 		}
 		loopNext.direction = dir
 		loopNext.position = vec.Add(loopNext.position, loopNext.direction)
