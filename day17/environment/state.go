@@ -55,7 +55,8 @@ func NextStatesWithLimits(s State, lowerStepLimit int, upperStepLimit int) []Sta
 	}
 	for _, dir := range directions {
 		loopNext := s
-		if loopNext.direction.InnerProduct(dir) == -1 {
+
+		if loopNext.direction.InnerProduct(dir) == -1 { // denna påverkar svaret i del 1 men det borde det verkligen inte
 			continue
 		}
 		if loopNext.direction == dir {

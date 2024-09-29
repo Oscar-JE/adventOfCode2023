@@ -11,18 +11,18 @@ import (
 )
 
 func main() {
-	fmt.Println(part2())
+	fmt.Println(part1())
 }
 
 func part1() int {
-	env, rows, cols := parseEnv("big.txt")
+	env, rows, cols := parseEnv("small.txt")
 	startState := environment.StartState()
-	cash := environment.InitStateCach(startState, rows, cols)
-	//cash := environment.InitSimpleCach()
+	//cash := environment.InitStateCach(startState, rows, cols)
+	cash := environment.InitSimpleCach()
 	dijk := dijkstras.Init[environment.State](env, &cash)
 	winningStates := environment.WinningStates(vec.Init(rows-1, cols-1))
 	distance := dijk.SmallestDist(winningStates, startState, 0)
-	//visualizeShortestDist(rows, cols, cash)
+	visualizeShortestDist(rows, cols, cash)
 	return distance
 }
 
@@ -73,11 +73,14 @@ func visualizeShortestDist(rows int, cols int, cach environment.SimpleCach) {
 
 func CostRep(v int) string {
 	separator := " "
-	if v >= 999 {
+	if v >= 1000 {
 		return separator + "nan"
 	}
-	if v >= 10 {
+	if v >= 100 {
 		return separator + separator + fmt.Sprint(v)
 	}
-	return separator + separator + separator + fmt.Sprint(v)
+	if v >= 10 {
+		return separator + separator + separator + fmt.Sprint(v)
+	}
+	return separator + separator + separator + separator + fmt.Sprint(v)
 }
