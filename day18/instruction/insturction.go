@@ -11,6 +11,18 @@ type Instruction struct {
 	direction vec.Vec2d
 }
 
+func Init(distance int, direction vec.Vec2d) Instruction {
+	return Instruction{distance: distance, direction: direction}
+}
+
+func (i Instruction) GetDistance() int {
+	return i.distance
+}
+
+func (i Instruction) GetDirection() vec.Vec2d {
+	return i.direction
+}
+
 func parse(rep string) Instruction {
 	parts := strings.Split(rep, " ")
 	directionCoding := parts[0]
