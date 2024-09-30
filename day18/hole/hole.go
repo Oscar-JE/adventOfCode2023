@@ -2,7 +2,7 @@ package hole
 
 import (
 	"day16/vec"
-	"fmt"
+	"day18/integration"
 )
 
 type Hole struct {
@@ -16,7 +16,20 @@ func Init(boarder []vec.Vec2d) Hole {
 func (h Hole) String() string {
 	minRow := h.findMinRow()
 	maxRow := h.findMaxRow()
-	return fmt.Sprintln(minRow + maxRow)
+	minCol := h.findMinCol()
+	maxCol := h.findMaxCol()
+	rep := ""
+	for i := minRow; i <= maxRow; i++ {
+		for j := minCol; j <= maxCol; j++ {
+			if h.has(i, j) {
+				rep += "#"
+			} else {
+				rep += "."
+			}
+		}
+		rep += "\r\n"
+	}
+	return rep
 }
 
 func (h Hole) findMinRow() int {
@@ -45,4 +58,63 @@ func (h Hole) findMaxRow() int {
 		}
 	}
 	return maxRow
+}
+
+func (h Hole) findMinCol() int {
+	if len(h.boarder) == 0 {
+		panic("wtf do you expect me to do. There is no least row")
+	}
+	minCol := h.boarder[0].GetY()
+	for i := 1; i < len(h.boarder); i++ {
+		col := h.boarder[i].GetY()
+		if minCol > col {
+			minCol = col
+		}
+	}
+	return minCol
+}
+
+func (h Hole) findMaxCol() int {
+	if len(h.boarder) == 0 {
+		panic("wtf do you expect me to do. There is no least row")
+	}
+	maxCol := h.boarder[0].GetY()
+	for i := 1; i < len(h.boarder); i++ {
+		col := h.boarder[i].GetY()
+		if maxCol < col {
+			maxCol = col
+		}
+	}
+	return maxCol
+}
+
+func (h Hole) has(x int, y int) bool {
+	el := vec.Init(x, y)
+	for _, point := range h.boarder {
+		if el == point {
+			return true
+		}
+	}
+	return false
+}
+
+func (h Hole) Fill() int {
+	minRow := h.findMinRow()
+	maxRow := h.findMaxCol()
+	sum := 0
+	for row := minRow; row <= maxRow; row++ {
+		boarderCols := h.findColNumbers(row)
+		sum += integration.RowIntegration(boarderCols)
+	}
+	return sum
+}
+
+func (h Hole) findColNumbers(row int) []int {
+	collNumbers := []int{}
+	for _, point := range h.boarder {
+		if point.GetX() == row {
+			collNumbers = append(collNumbers, point.GetY())
+		}
+	}
+	return collNumbers
 }
