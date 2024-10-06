@@ -13,12 +13,14 @@ func main() {
 }
 
 func part1() {
-	content, err := os.ReadFile("short.txt")
+	content, err := os.ReadFile("long.txt")
 	if err != nil {
 		panic("file reading failed")
 	}
 	rep := string(content)
 	instructions := instruction.ParseInstructions(rep, "\r\n")
 	hole := hole.Init(excavation.Excavate(instructions))
+	hole.PrintDoubleBoarders()
 	fmt.Println(hole)
+	fmt.Println(hole.NrExcavated())
 }

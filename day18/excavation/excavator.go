@@ -25,8 +25,8 @@ func (e *excavator) dig(inst instruction.Instruction) []vec.Vec2d {
 }
 
 func Excavate(instructions []instruction.Instruction) []vec.Vec2d {
-	exc, initialPosition := initExcavator()
-	holes := []vec.Vec2d{initialPosition}
+	exc, _ := initExcavator()
+	holes := []vec.Vec2d{}
 	for _, instruction := range instructions {
 		newlyDugg := exc.dig(instruction)
 		holes = append(holes, newlyDugg...)
