@@ -13,6 +13,10 @@ func Add(v1 Vec2d, v2 Vec2d) Vec2d {
 	return Vec2d{x: v1.x + v2.x, y: v1.y + v2.y}
 }
 
+func Subtract(v1 Vec2d, v2 Vec2d) Vec2d {
+	return Vec2d{x: v1.x - v2.x, y: v1.y - v2.y}
+}
+
 func (v Vec2d) GetX() int {
 	return v.x
 }
@@ -39,4 +43,16 @@ func (v Vec2d) InnerProduct(other Vec2d) int {
 
 func (v Vec2d) Orthogonal(other Vec2d) bool {
 	return v.InnerProduct(other) == 0
+}
+
+func (v Vec2d) Rotate90DegreesUp() Vec2d {
+	return Init(-v.y, v.x)
+}
+
+func (v Vec2d) Rotate90DegresUpMultiple(times int) Vec2d {
+	ret := v
+	for i := 0; i < times; i++ {
+		ret = ret.Rotate90DegreesUp()
+	}
+	return ret
 }
