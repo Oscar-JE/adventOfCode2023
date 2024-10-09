@@ -34,6 +34,11 @@ func parse(rep string) Instruction {
 	return Instruction{distance: dist, direction: direction(directionCoding)}
 }
 
+func parse2(rep string) Instruction {
+	parts := strings.Split(rep, " ")
+	return parse(rep)
+}
+
 func direction(directionCoding string) vec.Vec2d {
 	r := rune(directionCoding[0])
 	return directionMapping(r)
