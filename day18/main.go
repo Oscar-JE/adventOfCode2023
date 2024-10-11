@@ -9,18 +9,32 @@ import (
 )
 
 func main() {
-	part1()
+	part2()
 }
 
 func part1() {
-	content, err := os.ReadFile("long.txt")
+	fmt.Println(part1Internal("long.txt"))
+}
+
+func part1Internal(fileName string) int {
+	content, err := os.ReadFile(fileName)
 	if err != nil {
 		panic("file reading failed")
 	}
 	rep := string(content)
 	instructions := instruction.ParseInstructions(rep, "\r\n")
-	hole := hole.Init(excavation.Excavate(instructions))
-	hole.PrintDoubleBoarders()
+	hole := hole.Init(excavation.ExcavateInSegments(instructions))
+	return hole.NrExcavated()
+}
+
+func part2() {
+	content, err := os.ReadFile("short.txt")
+	if err != nil {
+		panic("file reading failed")
+	}
+	rep := string(content)
+	instructions := instruction.ParseInstructions2(rep, "\r\n")
+	hole := hole.Init(excavation.ExcavateInSegments(instructions))
 	fmt.Println(hole)
 	fmt.Println(hole.NrExcavated())
 }

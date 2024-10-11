@@ -15,7 +15,7 @@ func ParseInstructions2(content string, lineEnding string) []Instruction {
 	lines := strings.Split(content, lineEnding)
 	instructs := []Instruction{}
 	for _, line := range lines {
-		instructs = append(instructs, parse(line))
+		instructs = append(instructs, parse2(line))
 	}
 	return instructs
 }

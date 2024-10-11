@@ -3,6 +3,7 @@ package excavation
 import (
 	"day16/vec"
 	"day18/instruction"
+	"day18/segment"
 )
 
 type excavator struct {
@@ -32,4 +33,15 @@ func Excavate(instructions []instruction.Instruction) []vec.Vec2d {
 		holes = append(holes, newlyDugg...)
 	}
 	return holes
+}
+
+func ExcavateInSegments(instructions []instruction.Instruction) []segment.Segment {
+	currentPoint := vec.Init(0, 0)
+	segments := []segment.Segment{}
+	for _, inst := range instructions {
+		seg := segment.InitFromInstruction(currentPoint, inst)
+		segments = append(segments, seg)
+		currentPoint = vec.Add(currentPoint, inst.GetDirection().ScalarMultiplication(inst.GetDistance()))
+	}
+	return segments
 }

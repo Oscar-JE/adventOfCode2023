@@ -2,6 +2,7 @@ package instruction
 
 import (
 	"day16/vec"
+	"day18/hex"
 	"strconv"
 	"strings"
 )
@@ -36,7 +37,15 @@ func parse(rep string) Instruction {
 
 func parse2(rep string) Instruction {
 	parts := strings.Split(rep, " ")
-	return parse(rep)
+	colorCode := parts[2]
+	nummeric := cleanUp(colorCode)
+	symbols := []rune(nummeric)
+	directionRep := symbols[len(symbols)-1]
+	direction := directionMapping2(directionRep)
+	hexSymbols := symbols[:len(symbols)-1]
+	hexStr := string(hexSymbols)
+	nrSteps := hex.Parse(hexStr)
+	return Instruction{direction: direction, distance: nrSteps}
 }
 
 func direction(directionCoding string) vec.Vec2d {
@@ -58,4 +67,27 @@ func directionMapping(directionEncodeing rune) vec.Vec2d {
 		return vec.Init(0, -1)
 	}
 	panic("parsing of direction failed")
+}
+
+func directionMapping2(directionEncodeing rune) vec.Vec2d {
+	if directionEncodeing == '3' {
+		return vec.Init(-1, 0)
+	}
+	if directionEncodeing == '0' {
+		return vec.Init(0, 1)
+	}
+	if directionEncodeing == '1' {
+		return vec.Init(1, 0)
+	}
+	if directionEncodeing == '2' {
+		return vec.Init(0, -1)
+	}
+	panic("parsing of direction failed")
+}
+
+func cleanUp(colorCode string) string {
+	ret := strings.Replace(colorCode, "(", "", -1)
+	ret = strings.Replace(ret, ")", "", -1)
+	ret = strings.Replace(ret, "#", "", -1)
+	return ret
 }
