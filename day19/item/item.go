@@ -7,8 +7,23 @@ type Item struct {
 	shiny       int
 }
 
+func Init(cool int, musical int, aerodynamic int, shiny int) Item {
+	return Item{cool: cool, musical: musical, aerodynamic: aerodynamic, shiny: shiny}
+}
+
+func (it Item) Score() int {
+	return it.cool + it.musical + it.aerodynamic + it.shiny
+}
+
 type Demand interface {
 	Check(Item) bool
+}
+
+type NoDemand struct {
+}
+
+func (n NoDemand) Check(it Item) bool {
+	return true
 }
 
 type Cooler struct {
@@ -52,7 +67,7 @@ func (ma MoreAerodynamic) Check(it Item) bool {
 }
 
 type LessAerodynamic struct {
-	aerodynamic
+	aerodynamic int
 }
 
 func (la LessAerodynamic) Check(it Item) bool {
