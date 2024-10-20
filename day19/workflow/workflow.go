@@ -44,13 +44,13 @@ type WorkInformation struct {
 }
 
 type NodeInfo struct {
-	id    string
-	rules []RuleRep
+	Id    string
+	Rules []RuleRep
 }
 
 type RuleRep struct {
-	demandRep item.Demand
-	childId   string
+	Demand        item.Demand
+	DestinationId string
 }
 
 func Init(nodes []NodeInfo) Workflow {

@@ -27,65 +27,65 @@ func (n NoDemand) Check(it Item) bool {
 }
 
 type Cooler struct {
-	coolDemand int
+	CoolDemand int
 }
 
 func (c Cooler) Check(it Item) bool {
-	return c.coolDemand < it.cool
+	return c.CoolDemand < it.cool
 }
 
 type LessCool struct {
-	coolDemand int
+	CoolDemand int
 }
 
 func (lc LessCool) Check(it Item) bool {
-	return lc.coolDemand > it.cool
+	return lc.CoolDemand > it.cool
 }
 
 type MoreMusical struct {
-	musical int
+	Musical int
 }
 
 func (mm MoreMusical) Check(it Item) bool {
-	return mm.musical < it.musical
+	return mm.Musical < it.musical
 }
 
 type LessMusical struct {
-	musical int
+	Musical int
 }
 
 func (lm LessMusical) Check(it Item) bool {
-	return lm.musical > it.musical
+	return lm.Musical > it.musical
 }
 
 type MoreAerodynamic struct {
-	aerodynamic int
+	Aerodynamic int
 }
 
 func (ma MoreAerodynamic) Check(it Item) bool {
-	return ma.aerodynamic < it.aerodynamic
+	return ma.Aerodynamic < it.aerodynamic
 }
 
 type LessAerodynamic struct {
-	aerodynamic int
+	Aerodynamic int
 }
 
 func (la LessAerodynamic) Check(it Item) bool {
-	return la.aerodynamic > it.aerodynamic
+	return la.Aerodynamic > it.aerodynamic
 }
 
 type MoreShiny struct {
-	shiny int
+	Shiny int
 }
 
 func (ms MoreShiny) Check(it Item) bool {
-	return ms.shiny < it.shiny
+	return ms.Shiny < it.shiny
 }
 
 type LessShiny struct {
-	shiny int
+	Shiny int
 }
 
 func (ls LessShiny) Check(it Item) bool {
-	return ls.shiny > it.shiny
+	return ls.Shiny > it.shiny
 }
