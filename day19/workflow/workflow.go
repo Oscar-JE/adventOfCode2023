@@ -54,5 +54,7 @@ type RuleRep struct {
 }
 
 func Init(nodes []NodeInfo) Workflow {
+	// antar att första noden ska in här
+	// skapa upp med nill varden och pupulera sedan
 	return Workflow{}
 }
