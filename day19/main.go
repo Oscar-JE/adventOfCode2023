@@ -13,7 +13,8 @@ func main() {
 }
 
 func part1() {
-	fileName := "small.txt"
+	//fileName := "small.txt"
+	fileName := "big.txt"
 	content, err := os.ReadFile(fileName)
 	if err != nil {
 		panic("file reading failed")

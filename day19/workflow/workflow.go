@@ -20,6 +20,7 @@ func (c *checkNode) work(it item.Item) {
 	for _, rule := range c.rules {
 		if rule.check.Check(it) {
 			rule.next.work(it)
+			return
 		}
 	}
 }
@@ -34,9 +35,9 @@ func (s *sumNode) work(it item.Item) {
 }
 
 type Workflow struct {
-	startNode  checkNode
-	acceptNode sumNode
-	rejectNode sumNode
+	startNode  *checkNode
+	acceptNode *sumNode
+	rejectNode *sumNode
 }
 
 type WorkInformation struct {
@@ -66,23 +67,23 @@ func (w *Workflow) process(item item.Item) {
 }
 
 func Init(nodes []NodeInfo) Workflow {
-	workNodes := []checkNode{}
+	workNodes := []*checkNode{}
 	accept := sumNode{name: "A", sum: 0}
 	reject := sumNode{name: "R", sum: 0}
 	for _, nodeInf := range nodes {
 		loopNode := checkNode{nodeInf.Id, []rule{}}
-		workNodes = append(workNodes, loopNode)
+		workNodes = append(workNodes, &loopNode)
 	}
 
 	for index, nodeInf := range nodes {
-		workNodes[index].rules = createRule(nodeInf.Rules, workNodes, &accept, &reject)
+		workNodes[index].rules = append(workNodes[index].rules, createRule(nodeInf.Rules, workNodes, &accept, &reject)...)
 	}
 	startnode := findStartNode(workNodes)
-	workflow := Workflow{startNode: startnode, rejectNode: reject, acceptNode: accept}
+	workflow := Workflow{startNode: startnode, rejectNode: &reject, acceptNode: &accept}
 	return workflow
 }
 
-func createRule(ruleReps []RuleRep, workNodes []checkNode, accept *sumNode, reject *sumNode) []rule {
+func createRule(ruleReps []RuleRep, workNodes []*checkNode, accept *sumNode, reject *sumNode) []rule {
 	retRules := []rule{}
 	for _, ruleRep := range ruleReps {
 		nextNodeId := ruleRep.DestinationId
@@ -92,7 +93,7 @@ func createRule(ruleReps []RuleRep, workNodes []checkNode, accept *sumNode, reje
 	return retRules
 }
 
-func findNextNode(nextNodeId string, workNodes []checkNode, accept *sumNode, reject *sumNode) workNode {
+func findNextNode(nextNodeId string, workNodes []*checkNode, accept *sumNode, reject *sumNode) workNode {
 	if nextNodeId == "A" {
 		return accept
 	}
@@ -101,13 +102,13 @@ func findNextNode(nextNodeId string, workNodes []checkNode, accept *sumNode, rej
 	}
 	for _, workNode := range workNodes {
 		if nextNodeId == workNode.name {
-			return &workNode
+			return workNode
 		}
 	}
 	panic("No match for id was found")
 }
 
-func findStartNode(workNodes []checkNode) checkNode {
+func findStartNode(workNodes []*checkNode) *checkNode {
 	for _, node := range workNodes {
 		if node.name == "in" {
 			return node
