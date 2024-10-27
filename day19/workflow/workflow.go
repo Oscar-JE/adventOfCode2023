@@ -53,8 +53,65 @@ type RuleRep struct {
 	DestinationId string
 }
 
+func (w Workflow) ProcessItems(items []item.Item) int {
+	for _, item := range items {
+		w.process(item)
+	}
+	return w.acceptNode.sum
+}
+
+func (w *Workflow) process(item item.Item) {
+	activeNode := w.startNode
+	activeNode.work(item)
+}
+
 func Init(nodes []NodeInfo) Workflow {
-	// antar att första noden ska in här
-	// skapa upp med nill varden och pupulera sedan
-	return Workflow{}
+	workNodes := []checkNode{}
+	accept := sumNode{name: "A", sum: 0}
+	reject := sumNode{name: "R", sum: 0}
+	for _, nodeInf := range nodes {
+		loopNode := checkNode{nodeInf.Id, []rule{}}
+		workNodes = append(workNodes, loopNode)
+	}
+
+	for index, nodeInf := range nodes {
+		workNodes[index].rules = createRule(nodeInf.Rules, workNodes, &accept, &reject)
+	}
+	startnode := findStartNode(workNodes)
+	workflow := Workflow{startNode: startnode, rejectNode: reject, acceptNode: accept}
+	return workflow
+}
+
+func createRule(ruleReps []RuleRep, workNodes []checkNode, accept *sumNode, reject *sumNode) []rule {
+	retRules := []rule{}
+	for _, ruleRep := range ruleReps {
+		nextNodeId := ruleRep.DestinationId
+		nextNode := findNextNode(nextNodeId, workNodes, accept, reject)
+		retRules = append(retRules, rule{check: ruleRep.Demand, next: nextNode})
+	}
+	return retRules
+}
+
+func findNextNode(nextNodeId string, workNodes []checkNode, accept *sumNode, reject *sumNode) workNode {
+	if nextNodeId == "A" {
+		return accept
+	}
+	if nextNodeId == "R" {
+		return reject
+	}
+	for _, workNode := range workNodes {
+		if nextNodeId == workNode.name {
+			return &workNode
+		}
+	}
+	panic("No match for id was found")
+}
+
+func findStartNode(workNodes []checkNode) checkNode {
+	for _, node := range workNodes {
+		if node.name == "in" {
+			return node
+		}
+	}
+	panic("input node not present")
 }

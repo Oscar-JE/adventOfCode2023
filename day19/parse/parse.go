@@ -8,7 +8,7 @@ import (
 )
 
 func ParseNodes(nodesRep string) []workflow.NodeInfo {
-	lines := strings.Split(nodesRep, "\n\r")
+	lines := strings.Split(nodesRep, "\r\n")
 	nodeInfos := []workflow.NodeInfo{}
 	for _, line := range lines {
 		nodeInfos = append(nodeInfos, parseNode(line))
@@ -35,7 +35,6 @@ func parseRules(rulesRep string) []workflow.RuleRep {
 }
 
 func parseRule(ruleRep string) workflow.RuleRep {
-	//a<2006:qkq
 	demandAndDestination := strings.Split(ruleRep, ":")
 	if len(demandAndDestination) == 1 {
 		return workflow.RuleRep{Demand: item.NoDemand{}, DestinationId: demandAndDestination[0]}
@@ -82,7 +81,7 @@ func parseDemand(demandRep string) item.Demand {
 }
 
 func ParseItems(strItems string) []item.Item {
-	lines := strings.Split(strItems, "\n\r")
+	lines := strings.Split(strItems, "\r\n")
 	items := []item.Item{}
 	for _, line := range lines {
 		items = append(items, parseItem(line))
