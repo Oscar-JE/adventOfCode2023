@@ -18,9 +18,18 @@ func (i Interval) DemandBelow(limit int) Interval {
 	return Interval{newLowerBond, i.upper}
 }
 
+func (i Interval) differenceFrom(other Interval) []Interval {
+	if Intersect(i, other).IsEmpty(){
+		return []Interval{i}
+	}
+	// här börjk
+}
+
 func (i Interval) IsEmpty() bool {
 	return i.Cardinality() == 0
 }
+
+
 
 func Intersect(a Interval, b Interval) Interval {
 	return Interval{lower: max(a.lower, b.lower), upper: min(a.upper, b.upper)}
