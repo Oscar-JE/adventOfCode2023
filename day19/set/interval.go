@@ -23,6 +23,7 @@ func (i Interval) differenceFrom(other Interval) []Interval {
 		return []Interval{i}
 	}
 	// här börjk
+	return []Interval{other}
 }
 
 func (i Interval) IsEmpty() bool {
