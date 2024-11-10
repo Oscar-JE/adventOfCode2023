@@ -1,7 +1,5 @@
 package set
 
-// Skulle kunna implementera som ett bin tree men känner att
-// det skulle vara mer arbeta än nödvändigt såhär innan enkla exemplet gått igenom
 type Set struct {
 	disjunctIntervals []Interval
 }
@@ -64,4 +62,20 @@ func Union(s1 Set, s2 Set) Set {
 		s2.add(interval)
 	}
 	return s2
+}
+
+func (s Set) DemandAbove(limit int) Set {
+	newDisjunctSegments := []Interval{}
+	for _, seg := range s.disjunctIntervals {
+		newDisjunctSegments = append(newDisjunctSegments, seg.DemandAbove(limit))
+	}
+	return Set{newDisjunctSegments}
+}
+
+func (s Set) DemandBelow(limit int) Set {
+	newDisjunctSegments := []Interval{}
+	for _, seg := range s.disjunctIntervals {
+		newDisjunctSegments = append(newDisjunctSegments, seg.DemandBelow(limit))
+	}
+	return Set{newDisjunctSegments}
 }

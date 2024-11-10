@@ -9,17 +9,17 @@ func (i Interval) Cardinality() int {
 	return max(i.upper-i.lower, 0)
 }
 
-func (i Interval) DemandAbove(limit int) Interval { // häri behövs krav på att det inte blir negativa interval
+func (i Interval) DemandAbove(limit int) Interval {
 	return Interval{i.lower, min(limit, i.upper)}
+}
+
+func (i Interval) DemandBelow(limit int) Interval {
+	newLowerBond := max(i.lower, limit+1)
+	return Interval{newLowerBond, i.upper}
 }
 
 func (i Interval) unionOfConnected(other Interval) Interval {
 	return Interval{min(i.lower, other.lower), max(i.upper, other.upper)}
-}
-
-func (i Interval) DemandBelow(limit int) Interval { // häri behövs krav på att det inte blir negativa interval
-	newLowerBond := max(i.lower, limit+1)
-	return Interval{newLowerBond, i.upper}
 }
 
 func (i Interval) isLowerThan(other Interval) bool {

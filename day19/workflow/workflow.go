@@ -1,9 +1,12 @@
 package workflow
 
-import "day19/item"
+import (
+	"day19/item"
+)
 
 type workNode interface {
 	work(item.Item)
+	workSet(item.ItemSet) item.ItemSet // sedan blir det att jobba sig vidare
 }
 
 type rule struct {
@@ -16,6 +19,8 @@ type checkNode struct {
 	rules []rule
 }
 
+// jaha här blir det också konstigt
+
 func (c *checkNode) work(it item.Item) {
 	for _, rule := range c.rules {
 		if rule.check.Check(it) {
@@ -25,6 +30,15 @@ func (c *checkNode) work(it item.Item) {
 	}
 }
 
+func (c *checkNode) workSet(it item.ItemSet) item.ItemSet {
+	retSet := item.EmptyItemSet()
+	for _, rule := range c.rules {
+		loopSet := rule.check.CheckItemSet(it)
+		retSet = item.Union(retSet, rule.next.workSet(loopSet))
+	}
+	return retSet
+}
+
 type sumNode struct {
 	name string
 	sum  int
@@ -32,6 +46,13 @@ type sumNode struct {
 
 func (s *sumNode) work(it item.Item) {
 	s.sum += it.Score()
+}
+
+func (s *sumNode) workSet(it item.ItemSet) item.ItemSet {
+	if s.name == "A" {
+		return it
+	}
+	return item.EmptyItemSet()
 }
 
 type Workflow struct {
@@ -78,8 +99,8 @@ func Init(nodes []NodeInfo) Workflow {
 	for index, nodeInf := range nodes {
 		workNodes[index].rules = append(workNodes[index].rules, createRule(nodeInf.Rules, workNodes, &accept, &reject)...)
 	}
-	startnode := findStartNode(workNodes)
-	workflow := Workflow{startNode: startnode, rejectNode: &reject, acceptNode: &accept}
+	startNode := findStartNode(workNodes)
+	workflow := Workflow{startNode: startNode, rejectNode: &reject, acceptNode: &accept}
 	return workflow
 }
 
