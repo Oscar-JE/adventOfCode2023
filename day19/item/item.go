@@ -24,12 +24,21 @@ type ItemSet struct {
 	shiny       set.Set
 }
 
+func (it ItemSet) Cardinality() int {
+	return it.cool.Cardinality() * it.musical.Cardinality() * it.aerodynamic.Cardinality() * it.shiny.Cardinality()
+}
+
 func InitItemSet(cool set.Set, musical set.Set, aerodynamic set.Set, shiny set.Set) ItemSet {
 	return ItemSet{cool: cool, musical: musical, aerodynamic: aerodynamic, shiny: shiny}
 }
 
 func EmptyItemSet() ItemSet {
 	return ItemSet{cool: set.Set{}, musical: set.Set{}, aerodynamic: set.Set{}, shiny: set.Set{}}
+}
+
+func StandardItemSet(lowerIncluded int, upperIncluded int) ItemSet {
+	standardSet := set.Init(lowerIncluded, upperIncluded+1)
+	return ItemSet{cool: standardSet, musical: standardSet, aerodynamic: standardSet, shiny: standardSet}
 }
 
 func Union(A ItemSet, B ItemSet) ItemSet {

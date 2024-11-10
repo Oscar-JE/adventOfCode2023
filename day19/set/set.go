@@ -4,6 +4,10 @@ type Set struct {
 	disjunctIntervals []Interval
 }
 
+func Init(start int, end int) Set {
+	return Set{[]Interval{{start, end}}}
+}
+
 func (s Set) Cardinality() int {
 	sum := 0
 	for _, seg := range s.disjunctIntervals {

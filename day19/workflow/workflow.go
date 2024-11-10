@@ -87,6 +87,16 @@ func (w *Workflow) process(item item.Item) {
 	activeNode.work(item)
 }
 
+func (w Workflow) FindNumberOfPossibleAccept() int {
+	acceptedSet := w.findAcceptedSet()
+	return acceptedSet.Cardinality()
+}
+
+func (w Workflow) findAcceptedSet() item.ItemSet {
+	allPossibleItems := item.StandardItemSet(1, 4000)
+	return w.startNode.workSet(allPossibleItems)
+}
+
 func Init(nodes []NodeInfo) Workflow {
 	workNodes := []*checkNode{}
 	accept := sumNode{name: "A", sum: 0}
