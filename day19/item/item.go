@@ -48,7 +48,7 @@ func Union(A ItemSet, B ItemSet) ItemSet {
 
 type Demand interface {
 	Check(Item) bool
-	CheckItemSet(ItemSet) ItemSet
+	CheckItemSet(ItemSet) (ItemSet, ItemSet)
 }
 
 type NoDemand struct {
@@ -58,8 +58,8 @@ func (n NoDemand) Check(it Item) bool {
 	return true
 }
 
-func (n NoDemand) CheckItemSet(it ItemSet) ItemSet {
-	return it
+func (n NoDemand) CheckItemSet(it ItemSet) (ItemSet, ItemSet) {
+	return it, EmptyItemSet()
 }
 
 type Cooler struct {
@@ -70,10 +70,12 @@ func (c Cooler) Check(it Item) bool {
 	return c.CoolDemand < it.cool
 }
 
-func (c Cooler) CheckItemSet(it ItemSet) ItemSet {
-	newCoolSet := it.cool.DemandBelow(c.CoolDemand)
+func (c Cooler) CheckItemSet(it ItemSet) (ItemSet, ItemSet) {
+	newCoolSet, coolComplement := it.cool.DemandBelow(c.CoolDemand)
+	complement := it
+	complement.cool = coolComplement
 	it.cool = newCoolSet
-	return it
+	return it, complement
 }
 
 type LessCool struct {
@@ -84,10 +86,12 @@ func (lc LessCool) Check(it Item) bool {
 	return lc.CoolDemand > it.cool
 }
 
-func (lc LessCool) CheckItemSet(it ItemSet) ItemSet {
-	newCoolSet := it.cool.DemandAbove(lc.CoolDemand)
+func (lc LessCool) CheckItemSet(it ItemSet) (ItemSet, ItemSet) {
+	newCoolSet, coolSetComplement := it.cool.DemandAbove(lc.CoolDemand)
+	complement := it
+	complement.cool = coolSetComplement
 	it.cool = newCoolSet
-	return it
+	return it, complement
 }
 
 type MoreMusical struct {
@@ -98,10 +102,12 @@ func (mm MoreMusical) Check(it Item) bool {
 	return mm.Musical < it.musical
 }
 
-func (mm MoreMusical) CheckItemSet(it ItemSet) ItemSet {
-	newMusical := it.musical.DemandBelow(mm.Musical)
+func (mm MoreMusical) CheckItemSet(it ItemSet) (ItemSet, ItemSet) {
+	newMusical, musicalComplement := it.musical.DemandBelow(mm.Musical)
+	complement := it
+	complement.musical = musicalComplement
 	it.musical = newMusical
-	return it
+	return it, complement
 }
 
 type LessMusical struct {
@@ -112,10 +118,12 @@ func (lm LessMusical) Check(it Item) bool {
 	return lm.Musical > it.musical
 }
 
-func (lm LessMusical) CheckItemSet(it ItemSet) ItemSet {
-	newMusical := it.musical.DemandAbove(lm.Musical)
+func (lm LessMusical) CheckItemSet(it ItemSet) (ItemSet, ItemSet) {
+	newMusical, musicalComplement := it.musical.DemandAbove(lm.Musical)
+	complement := it
+	complement.musical = musicalComplement
 	it.musical = newMusical
-	return it
+	return it, complement
 }
 
 type MoreAerodynamic struct {
@@ -126,10 +134,12 @@ func (ma MoreAerodynamic) Check(it Item) bool {
 	return ma.Aerodynamic < it.aerodynamic
 }
 
-func (ma MoreAerodynamic) CheckItemSet(it ItemSet) ItemSet {
-	newAero := it.aerodynamic.DemandBelow(ma.Aerodynamic)
+func (ma MoreAerodynamic) CheckItemSet(it ItemSet) (ItemSet, ItemSet) {
+	newAero, aeroComplement := it.aerodynamic.DemandBelow(ma.Aerodynamic)
+	complement := it
+	complement.aerodynamic = aeroComplement
 	it.aerodynamic = newAero
-	return it
+	return it, complement
 }
 
 type LessAerodynamic struct {
@@ -140,10 +150,12 @@ func (la LessAerodynamic) Check(it Item) bool {
 	return la.Aerodynamic > it.aerodynamic
 }
 
-func (la LessAerodynamic) CheckItemSet(it ItemSet) ItemSet {
-	newAero := it.aerodynamic.DemandAbove(la.Aerodynamic)
+func (la LessAerodynamic) CheckItemSet(it ItemSet) (ItemSet, ItemSet) {
+	newAero, aeroComplement := it.aerodynamic.DemandAbove(la.Aerodynamic)
+	complement := it
+	complement.aerodynamic = aeroComplement
 	it.aerodynamic = newAero
-	return it
+	return it, complement
 }
 
 type MoreShiny struct {
@@ -154,10 +166,12 @@ func (ms MoreShiny) Check(it Item) bool {
 	return ms.Shiny < it.shiny
 }
 
-func (ms MoreShiny) CheckItemSet(it ItemSet) ItemSet {
-	newShiny := it.shiny.DemandBelow(ms.Shiny)
+func (ms MoreShiny) CheckItemSet(it ItemSet) (ItemSet, ItemSet) {
+	newShiny, shinyComplement := it.shiny.DemandBelow(ms.Shiny)
+	complement := it
+	complement.shiny = shinyComplement
 	it.shiny = newShiny
-	return it
+	return it, complement
 }
 
 type LessShiny struct {
@@ -168,8 +182,10 @@ func (ls LessShiny) Check(it Item) bool {
 	return ls.Shiny > it.shiny
 }
 
-func (ls LessShiny) CheckItemSet(it ItemSet) ItemSet {
-	newShiny := it.shiny.DemandAbove(ls.Shiny)
+func (ls LessShiny) CheckItemSet(it ItemSet) (ItemSet, ItemSet) {
+	newShiny, shinyComplement := it.shiny.DemandAbove(ls.Shiny)
+	complement := it
+	complement.shiny = shinyComplement
 	it.shiny = newShiny
-	return it
+	return it, complement
 }

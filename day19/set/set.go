@@ -68,18 +68,42 @@ func Union(s1 Set, s2 Set) Set {
 	return s2
 }
 
-func (s Set) DemandAbove(limit int) Set {
+func (s Set) DemandAbove(limit int) (Set, Set) {
 	newDisjunctSegments := []Interval{}
+	newDisjunctSegmentComplement := []Interval{}
 	for _, seg := range s.disjunctIntervals {
-		newDisjunctSegments = append(newDisjunctSegments, seg.DemandAbove(limit))
+		if seg.isLowerThanEl(limit) {
+			newDisjunctSegments = append(newDisjunctSegments, seg)
+			continue
+		}
+		if seg.isLargerThanEl(limit) {
+			newDisjunctSegmentComplement = append(newDisjunctSegmentComplement, seg)
+		}
+		if seg.containsElement(limit) {
+			lowerInterval, upperInterval := seg.splitOn(limit)
+			newDisjunctSegments = append(newDisjunctSegments, lowerInterval)
+			newDisjunctSegmentComplement = append(newDisjunctSegmentComplement, upperInterval)
+		}
 	}
-	return Set{newDisjunctSegments}
+	return Set{newDisjunctSegments}, Set{newDisjunctSegmentComplement}
 }
 
-func (s Set) DemandBelow(limit int) Set {
+func (s Set) DemandBelow(limit int) (Set, Set) {
 	newDisjunctSegments := []Interval{}
+	newDisjunctSegmentComplement := []Interval{}
 	for _, seg := range s.disjunctIntervals {
+		if seg.isLowerThanEl(limit) {
+			newDisjunctSegmentComplement = append(newDisjunctSegmentComplement, seg)
+		}
+		if seg.isLargerThanEl(limit) {
+			newDisjunctSegments = append(newDisjunctSegments, seg)
+		}
+		if seg.containsElement(limit) {
+			lowerInterval, upperInterval := seg.splitOn(limit)
+			newDisjunctSegments = append(newDisjunctSegments, upperInterval)
+			newDisjunctSegmentComplement = append(newDisjunctSegmentComplement, lowerInterval)
+		}
 		newDisjunctSegments = append(newDisjunctSegments, seg.DemandBelow(limit))
 	}
-	return Set{newDisjunctSegments}
+	return Set{newDisjunctSegments}, Set{newDisjunctSegmentComplement}
 }

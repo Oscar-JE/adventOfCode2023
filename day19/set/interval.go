@@ -26,6 +26,18 @@ func (i Interval) isLowerThan(other Interval) bool {
 	return i.upper <= other.lower
 }
 
+func (i Interval) isLowerThanEl(element int) bool {
+	return i.upper <= element
+}
+
+func (i Interval) isLargerThanEl(element int) bool {
+	return i.lower >= element
+}
+
+func (i Interval) splitOn(limit int) (Interval, Interval) {
+	return Interval{i.lower, limit}, Interval{limit, i.upper}
+}
+
 func (i Interval) differenceFrom(other Interval) []Interval {
 	if Intersect(i, other).IsEmpty() {
 		return []Interval{i}

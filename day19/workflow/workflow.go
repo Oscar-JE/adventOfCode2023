@@ -33,8 +33,9 @@ func (c *checkNode) work(it item.Item) {
 func (c *checkNode) workSet(it item.ItemSet) item.ItemSet {
 	retSet := item.EmptyItemSet()
 	for _, rule := range c.rules {
-		loopSet := rule.check.CheckItemSet(it)
+		loopSet, loopComplement := rule.check.CheckItemSet(it)
 		retSet = item.Union(retSet, rule.next.workSet(loopSet))
+		it = loopComplement
 	}
 	return retSet
 }
