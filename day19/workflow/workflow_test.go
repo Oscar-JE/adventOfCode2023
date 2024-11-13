@@ -32,3 +32,13 @@ func TestSimpleWorkflowOneAccepted(t *testing.T) {
 	}
 	fmt.Println(workFlow)
 }
+
+/*
+func TestTwoLevels(t *testing.T) {
+	nodes := []NodeInfo{}
+	nodes = append(nodes, NodeInfo{Id: "in", Rules: []RuleRep{{Demand: item.LessMusical{Musical: 5}, DestinationId: "A"}, {Demand: item.NoDemand{}, DestinationId: "R"}}})
+	nodes = append(nodes, NodeInfo{Id: "m1", Rules: []RuleRep{{Demand: item.MoreMusical{6}, DestinationId: "R"},De}})
+	nodes = append(nodes, NodeInfo{Id: "A", Rules: []RuleRep{}})
+	nodes = append(nodes, NodeInfo{Id: "R", Rules: []RuleRep{}})
+	workFlow := Init(nodes)
+}*/

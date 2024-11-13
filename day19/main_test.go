@@ -3,5 +3,5 @@ package main
 import "testing"
 
 func TestPartOne(t *testing.T) {
-	part1()
+	part2()
 }

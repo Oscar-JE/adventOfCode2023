@@ -99,7 +99,7 @@ func (s Set) DemandBelow(limit int) (Set, Set) {
 			newDisjunctSegments = append(newDisjunctSegments, seg)
 		}
 		if seg.containsElement(limit) {
-			lowerInterval, upperInterval := seg.splitOn(limit)
+			lowerInterval, upperInterval := seg.splitOn(limit + 1) //upperInterval ska inte innehålla elementet
 			newDisjunctSegments = append(newDisjunctSegments, upperInterval)
 			newDisjunctSegmentComplement = append(newDisjunctSegmentComplement, lowerInterval)
 		}

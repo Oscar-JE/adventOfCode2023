@@ -6,7 +6,7 @@ import (
 
 type workNode interface {
 	work(item.Item)
-	workSet(item.ItemSet) item.ItemSet // sedan blir det att jobba sig vidare
+	workSet(item.ItemSet) int
 }
 
 type rule struct {
@@ -30,14 +30,14 @@ func (c *checkNode) work(it item.Item) {
 	}
 }
 
-func (c *checkNode) workSet(it item.ItemSet) item.ItemSet {
-	retSet := item.EmptyItemSet()
+func (c *checkNode) workSet(it item.ItemSet) int {
+	sum := 0
 	for _, rule := range c.rules {
 		loopSet, loopComplement := rule.check.CheckItemSet(it)
-		retSet = item.Union(retSet, rule.next.workSet(loopSet))
+		sum += rule.next.workSet(loopSet)
 		it = loopComplement
 	}
-	return retSet
+	return sum
 }
 
 type sumNode struct {
@@ -49,11 +49,11 @@ func (s *sumNode) work(it item.Item) {
 	s.sum += it.Score()
 }
 
-func (s *sumNode) workSet(it item.ItemSet) item.ItemSet {
+func (s *sumNode) workSet(it item.ItemSet) int {
 	if s.name == "A" {
-		return it
+		return it.Cardinality()
 	}
-	return item.EmptyItemSet()
+	return 0
 }
 
 type Workflow struct {
@@ -89,11 +89,6 @@ func (w *Workflow) process(item item.Item) {
 }
 
 func (w Workflow) FindNumberOfPossibleAccept() int {
-	acceptedSet := w.findAcceptedSet()
-	return acceptedSet.Cardinality()
-}
-
-func (w Workflow) findAcceptedSet() item.ItemSet {
 	allPossibleItems := item.StandardItemSet(1, 4000)
 	return w.startNode.workSet(allPossibleItems)
 }
