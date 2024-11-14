@@ -87,23 +87,3 @@ func (s Set) DemandAbove(limit int) (Set, Set) {
 	}
 	return Set{newDisjunctSegments}, Set{newDisjunctSegmentComplement}
 }
-
-func (s Set) DemandBelow(limit int) (Set, Set) {
-	newDisjunctSegments := []Interval{}
-	newDisjunctSegmentComplement := []Interval{}
-	for _, seg := range s.disjunctIntervals {
-		if seg.isLowerThanEl(limit) {
-			newDisjunctSegmentComplement = append(newDisjunctSegmentComplement, seg)
-		}
-		if seg.isLargerThanEl(limit) {
-			newDisjunctSegments = append(newDisjunctSegments, seg)
-		}
-		if seg.containsElement(limit) {
-			lowerInterval, upperInterval := seg.splitOn(limit + 1) //upperInterval ska inte innehålla elementet
-			newDisjunctSegments = append(newDisjunctSegments, upperInterval)
-			newDisjunctSegmentComplement = append(newDisjunctSegmentComplement, lowerInterval)
-		}
-		newDisjunctSegments = append(newDisjunctSegments, seg.DemandBelow(limit))
-	}
-	return Set{newDisjunctSegments}, Set{newDisjunctSegmentComplement}
-}

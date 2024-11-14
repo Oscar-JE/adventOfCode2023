@@ -5,17 +5,22 @@ type Interval struct {
 	upper int
 }
 
+func InitInterval(lower int, upper int) Interval {
+	return Interval{lower, upper}
+}
+
 func (i Interval) Cardinality() int {
 	return max(i.upper-i.lower, 0)
 }
 
-func (i Interval) DemandAbove(limit int) Interval {
-	return Interval{i.lower, min(limit, i.upper)}
+func (i Interval) DemandAbove(limit int) (Interval, Interval) {
+	splitLimit := min(limit, i.upper)
+	return Interval{i.lower, splitLimit}, Interval{splitLimit, i.upper}
 }
 
-func (i Interval) DemandBelow(limit int) Interval {
+func (i Interval) DemandBelow(limit int) (Interval, Interval) {
 	newLowerBond := max(i.lower, limit+1)
-	return Interval{newLowerBond, i.upper}
+	return Interval{newLowerBond, i.upper}, Interval{i.lower, newLowerBond}
 }
 
 func (i Interval) unionOfConnected(other Interval) Interval {

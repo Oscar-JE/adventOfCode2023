@@ -18,32 +18,27 @@ func (it Item) Score() int {
 }
 
 type ItemSet struct {
-	cool        set.Set
-	musical     set.Set
-	aerodynamic set.Set
-	shiny       set.Set
+	cool        set.Interval
+	musical     set.Interval
+	aerodynamic set.Interval
+	shiny       set.Interval
 }
 
 func (it ItemSet) Cardinality() int {
 	return it.cool.Cardinality() * it.musical.Cardinality() * it.aerodynamic.Cardinality() * it.shiny.Cardinality()
 }
 
-func InitItemSet(cool set.Set, musical set.Set, aerodynamic set.Set, shiny set.Set) ItemSet {
+func InitItemSet(cool set.Interval, musical set.Interval, aerodynamic set.Interval, shiny set.Interval) ItemSet {
 	return ItemSet{cool: cool, musical: musical, aerodynamic: aerodynamic, shiny: shiny}
 }
 
 func EmptyItemSet() ItemSet {
-	return ItemSet{cool: set.Set{}, musical: set.Set{}, aerodynamic: set.Set{}, shiny: set.Set{}}
+	return ItemSet{cool: set.InitInterval(0, 0), musical: set.InitInterval(0, 0), aerodynamic: set.InitInterval(0, 0), shiny: set.InitInterval(0, 0)}
 }
 
 func StandardItemSet(lowerIncluded int, upperIncluded int) ItemSet {
-	standardSet := set.Init(lowerIncluded, upperIncluded+1)
-	return ItemSet{cool: standardSet, musical: standardSet, aerodynamic: standardSet, shiny: standardSet}
-}
-
-func Union(A ItemSet, B ItemSet) ItemSet {
-	return ItemSet{cool: set.Union(A.cool, B.cool), musical: set.Union(A.musical, B.musical),
-		aerodynamic: set.Union(A.aerodynamic, B.aerodynamic), shiny: set.Union(A.shiny, B.shiny)}
+	standarInterval := set.InitInterval(lowerIncluded, upperIncluded+1)
+	return ItemSet{cool: standarInterval, musical: standarInterval, aerodynamic: standarInterval, shiny: standarInterval}
 }
 
 type Demand interface {

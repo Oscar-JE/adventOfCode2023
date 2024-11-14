@@ -14,7 +14,7 @@ func main() {
 }
 
 func part2() {
-	fileName := "small.txt"
+	fileName := "big.txt"
 	workflow, _ := Parse(fileName)
 	fmt.Println(workflow.FindNumberOfPossibleAccept())
 }
