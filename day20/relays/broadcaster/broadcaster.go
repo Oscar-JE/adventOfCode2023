@@ -12,3 +12,7 @@ type alwaysLow struct {
 func (a alwaysLow) IsOutputHeigh(signals []relays.Signal) bool {
 	return false
 }
+
+func (a alwaysLow) ShouldSendSignal(signals []relays.Signal) bool {
+	return false
+}
