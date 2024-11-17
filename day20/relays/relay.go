@@ -20,11 +20,20 @@ func (s Signal) GetSrc() *Relay {
 type Relay struct {
 	signalTmp []Signal
 	outgoing  []*Relay
+	ingoing   []*Relay
 	com       communicator
 }
 
 func Init(outgoing []*Relay, com communicator) Relay {
 	return Relay{outgoing: outgoing, com: com}
+}
+
+func (r *Relay) SetOutgoing(relays []*Relay) {
+	r.outgoing = relays
+}
+
+func (r *Relay) SetIngoing(relays []*Relay) {
+	r.ingoing = relays
 }
 
 func (r *Relay) Propagate() {
@@ -46,3 +55,5 @@ func (r *Relay) JumpStart() {
 		downStream.signalTmp = append(downStream.signalTmp, Signal{isOutputHeigh, r})
 	}
 }
+
+//function för att sätta kommunikator beroende på sträng kan vi ta här nere
