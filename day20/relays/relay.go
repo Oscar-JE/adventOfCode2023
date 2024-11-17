@@ -13,6 +13,10 @@ func (s Signal) GetHeigh() bool {
 	return s.heigh
 }
 
+func (s Signal) GetSrc() *Relay {
+	return s.source
+}
+
 type Relay struct {
 	signalTmp []Signal
 	outgoing  []*Relay

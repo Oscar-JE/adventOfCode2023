@@ -24,8 +24,8 @@ func (c conjunction) ShouldSendSignal(inputs []relays.Signal) bool {
 }
 
 func (c *conjunction) IsOutputHeigh(inputs []relays.Signal) bool {
-	heigh := c.isAllPreviousHeigh()
-	c.setPreviousSignals(inputs)
+	c.updatePreviousSignals(inputs)
+	heigh := !c.isAllPreviousHeigh()
 	return heigh
 }
 
@@ -38,6 +38,17 @@ func (c conjunction) isAllPreviousHeigh() bool {
 	return true
 }
 
-func (c *conjunction) setPreviousSignals(inputs []relays.Signal) {
-	c.previousSignals = inputs
+func (c *conjunction) updatePreviousSignals(inputs []relays.Signal) {
+	for _, inSignal := range inputs {
+		c.updateSingular(inSignal)
+	}
+}
+
+func (c *conjunction) updateSingular(inSig relays.Signal) {
+	for i, prevSig := range c.previousSignals {
+		if prevSig.GetSrc() == inSig.GetSrc() {
+			c.previousSignals[i] = inSig
+			return
+		}
+	}
 }
