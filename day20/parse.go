@@ -22,8 +22,26 @@ func parseExample(content string) network.Network {
 	for _, line := range lines {
 		idAndConnectionsList = append(idAndConnectionsList, emptyWithId(line))
 	}
+	cons := []connection{}
 	for _, line := range lines {
-		connections := cennections(line)
+		cons = append(cons, connections(line)...)
+	}
+	for _, con := range cons {
+		var from *relays.Relay = nil
+		for _, el := range idAndConnectionsList {
+			if con.fromId == el.id {
+				from = &el.relay
+			}
+		}
+		var to *relays.Relay = nil
+		for _, el := range idAndConnectionsList {
+			loopId := strings.Trim(el.id, "%&")
+			if loopId == con.toId {
+				to = &el.relay
+			}
+		}
+		from.AppendOutgoing(to)
+		to.AppendIngoing(from)
 	}
 	return network.Network{}
 }
@@ -39,11 +57,20 @@ func connections(line string) []connection {
 	splitted := strings.Split(line, " -> ")
 	fromId := splitted[0]
 	toIds := toIds(splitted[1])
+	for _, toId := range toIds {
+		connections = append(connections, connection{fromId: fromId, toId: toId})
+	}
+	return connections
+}
+
+func toIds(destinationRep string) []string {
+	splitted := strings.Split(destinationRep, ", ")
+	return splitted
 }
 
 type idAndConnections struct {
-	id         string
-	connection relays.Relay
+	id    string
+	relay relays.Relay
 }
 
 type connection struct {

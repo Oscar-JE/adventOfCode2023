@@ -32,8 +32,16 @@ func (r *Relay) SetOutgoing(relays []*Relay) {
 	r.outgoing = relays
 }
 
+func (r *Relay) AppendOutgoing(rel *Relay) {
+	r.outgoing = append(r.outgoing, rel)
+}
+
 func (r *Relay) SetIngoing(relays []*Relay) {
 	r.ingoing = relays
+}
+
+func (r *Relay) AppendIngoing(rel *Relay) {
+	r.ingoing = append(r.ingoing, rel)
 }
 
 func (r *Relay) Propagate() {
