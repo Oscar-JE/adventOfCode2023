@@ -20,16 +20,16 @@ func TestIsSignalHeigh(t *testing.T) {
 	source1 := relays.Init([]*relays.Relay{}, &conDupe)
 	source2 := relays.Init([]*relays.Relay{}, &conDupe)
 	con := InitConjunction([]*relays.Relay{&source1, &source2})
-	if !con.IsOutputHeigh([]relays.Signal{}) {
+	if !con.IsOutputHigh([]relays.Signal{}) {
 		t.Errorf("all previous low should return in heigh")
 	}
-	if !con.IsOutputHeigh([]relays.Signal{relays.InitSignal(true, &source1)}) {
+	if !con.IsOutputHigh([]relays.Signal{relays.InitSignal(true, &source1)}) {
 		t.Errorf("Only one previous heigh should result in Heigh")
 	}
-	if con.IsOutputHeigh([]relays.Signal{relays.InitSignal(true, &source2)}) {
+	if con.IsOutputHigh([]relays.Signal{relays.InitSignal(true, &source2)}) {
 		t.Errorf("All previous heigh should result in low output")
 	}
-	if !con.IsOutputHeigh([]relays.Signal{relays.InitSignal(false, &source1)}) {
+	if !con.IsOutputHigh([]relays.Signal{relays.InitSignal(false, &source1)}) {
 		t.Errorf("mix leads to heigh")
 	}
 

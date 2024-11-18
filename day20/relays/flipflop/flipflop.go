@@ -10,7 +10,7 @@ type flipflop struct {
 	isOn bool
 }
 
-func (f flipflop) IsOutputHeigh(inputs []relays.Signal) bool {
+func (f flipflop) IsOutputHigh(inputs []relays.Signal) bool {
 	return f.isOn
 }
 
@@ -25,7 +25,7 @@ func (f *flipflop) ShouldSendSignal(inputs []relays.Signal) bool {
 func containsLow(inputs []relays.Signal) bool {
 	res := false
 	for _, s := range inputs {
-		if !s.GetHeigh() {
+		if !s.GetHigh() {
 			res = true
 			break
 		}

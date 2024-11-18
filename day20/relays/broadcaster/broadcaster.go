@@ -9,11 +9,11 @@ func InitBroadcaster() relays.Relay {
 type sameAsFirst struct {
 }
 
-func (a sameAsFirst) IsOutputHeigh(signals []relays.Signal) bool {
+func (a sameAsFirst) IsOutputHigh(signals []relays.Signal) bool {
 	if len(signals) == 0 {
 		return false
 	}
-	return signals[0].GetHeigh()
+	return signals[0].GetHigh()
 }
 
 func (a sameAsFirst) ShouldSendSignal(signals []relays.Signal) bool {

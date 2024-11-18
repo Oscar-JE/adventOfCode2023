@@ -1,16 +1,16 @@
 package relays
 
 type Signal struct {
-	heigh  bool
+	high   bool
 	source *Relay
 }
 
-func InitSignal(heigh bool, source *Relay) Signal {
-	return Signal{heigh: heigh, source: source}
+func InitSignal(high bool, source *Relay) Signal {
+	return Signal{high: high, source: source}
 }
 
-func (s Signal) GetHeigh() bool {
-	return s.heigh
+func (s Signal) GetHigh() bool {
+	return s.high
 }
 
 func (s Signal) GetSrc() *Relay {
@@ -45,22 +45,22 @@ func (r *Relay) AppendIngoing(rel *Relay) {
 }
 
 func (r *Relay) Propagate() {
-	isOutputHeigh := r.com.IsOutputHeigh(r.signalTmp)
+	isOutputHigh := r.com.IsOutputHigh(r.signalTmp)
 	r.signalTmp = []Signal{}
 	for _, downStream := range r.outgoing {
-		downStream.signalTmp = append(downStream.signalTmp, Signal{isOutputHeigh, r})
+		downStream.signalTmp = append(downStream.signalTmp, Signal{isOutputHigh, r})
 	}
 }
 
 type communicator interface {
-	IsOutputHeigh(inputs []Signal) bool
+	IsOutputHigh(inputs []Signal) bool
 	ShouldSendSignal(inputs []Signal) bool
 }
 
 func (r *Relay) JumpStart() {
-	isOutputHeigh := r.com.IsOutputHeigh(r.signalTmp)
+	isOutputHigh := r.com.IsOutputHigh(r.signalTmp)
 	for _, downStream := range r.outgoing {
-		downStream.signalTmp = append(downStream.signalTmp, Signal{isOutputHeigh, r})
+		downStream.signalTmp = append(downStream.signalTmp, Signal{isOutputHigh, r})
 	}
 }
 

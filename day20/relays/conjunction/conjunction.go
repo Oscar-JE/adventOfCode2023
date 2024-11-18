@@ -23,7 +23,7 @@ func (c conjunction) ShouldSendSignal(inputs []relays.Signal) bool {
 	return len(inputs) > 0
 }
 
-func (c *conjunction) IsOutputHeigh(inputs []relays.Signal) bool {
+func (c *conjunction) IsOutputHigh(inputs []relays.Signal) bool {
 	c.updatePreviousSignals(inputs)
 	heigh := !c.isAllPreviousHeigh()
 	return heigh
@@ -31,7 +31,7 @@ func (c *conjunction) IsOutputHeigh(inputs []relays.Signal) bool {
 
 func (c conjunction) isAllPreviousHeigh() bool {
 	for _, sig := range c.previousSignals {
-		if !sig.GetHeigh() {
+		if !sig.GetHigh() {
 			return false
 		}
 	}

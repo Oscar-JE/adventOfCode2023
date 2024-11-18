@@ -43,6 +43,8 @@ func parseExample(content string) network.Network {
 		from.AppendOutgoing(to)
 		to.AppendIngoing(from)
 	}
+	// problem
+	
 	return network.Network{}
 }
 
